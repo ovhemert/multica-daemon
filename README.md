@@ -67,7 +67,13 @@ The container runs as a non-root `multica` user with `HOME=/multica` and a works
    | `MULTICA_APP_URL` | URL of the Multica web app (e.g. `https://app.multica.ai`) |
    | `MULTICA_SERVER_URL` | URL of the Multica API/WebSocket server |
    | `MULTICA_TOKEN` | Runtime installer token (`mul_…`) |
-   | `MULTICA_DAEMON_ID` | A unique name for this daemon (shown in the Runtimes page) |
+   | `MULTICA_DAEMON_ID` | A unique name for this daemon (shown in the Runtimes page); defaults to `$HOSTNAME` if omitted |
+   | `GIT_AUTHOR_NAME` | Name used for git commits produced by agent tasks |
+   | `GIT_AUTHOR_EMAIL` | Email used for git commits produced by agent tasks |
+
+   > **Do not commit live tokens to version control.** Use `--env-file` with a
+   > file outside your repo, Docker secrets, or SOPS/age — see
+   > [Secret management](#secret-management) for details.
 
 3. **Start the runtime:**
 
@@ -127,15 +133,53 @@ Practical scaling guidelines:
 | `MULTICA_APP_URL` | — (required) | URL of the Multica web app |
 | `MULTICA_SERVER_URL` | — (required) | URL of the Multica server (API / WebSocket) |
 | `MULTICA_TOKEN` | — (required) | Runtime installer token |
-| `MULTICA_DAEMON_ID` | — (required) | Daemon device name, shown on the Runtimes page |
+| `MULTICA_DAEMON_ID` | `$HOSTNAME` | Daemon device name, shown on the Runtimes page — **must be unique per container** (see below) |
 | `MULTICA_WORKSPACES_ROOT` | `/workspaces` | Where the daemon clones repositories |
 | `MULTICA_DAEMON_MAX_CONCURRENT_TASKS` | `20` (Multica default) | Per-daemon concurrent task limit |
+| `GIT_AUTHOR_NAME` | — | Git `user.name` applied globally inside the container |
+| `GIT_AUTHOR_EMAIL` | — | Git `user.email` applied globally inside the container |
 
-### Installed CLIs
+### MULTICA_DAEMON_ID uniqueness
 
-Each CLI installed in the image is exposed to the daemon by default. Use an image variant when you want to run only one bundled CLI.
+> **Warning: never run two containers with the same `MULTICA_DAEMON_ID`.**
+> They will race over heartbeats and task assignment, causing tasks to stall
+> or execute twice.
 
-> Each installed CLI shows up as its own runtime row in the Multica UI (one per *daemon × tool × workspace* combination).
+When `MULTICA_DAEMON_ID` is not set the entrypoint falls back to
+`$HOSTNAME`, which Docker sets to the short container ID — unique by default.
+Set it explicitly when you want a stable, human-readable name on the Runtimes
+page (e.g. `daemon-prod-01`). If you scale out with `docker compose up
+--scale runtime=N`, **omit `MULTICA_DAEMON_ID`** from your `.env` and let
+each replica get a distinct ID from its hostname.
+
+### Secret management
+
+Do **not** put live tokens in a committed `.env` file. Recommended approaches
+in order of increasing security:
+
+**`--env-file` (simplest, local only)**
+```bash
+docker compose --env-file /path/to/secrets.env up -d
+```
+Keep the secrets file outside the repo and out of version control.
+
+**Docker secrets (Swarm / Compose v2)**
+```yaml
+services:
+  runtime:
+    secrets:
+      - multica_token
+secrets:
+  multica_token:
+    file: ./secrets/multica_token.txt
+```
+Secrets are mounted as files under `/run/secrets/` inside the container. The
+entrypoint would need updating to read the file; contributions welcome.
+
+**SOPS + age (recommended for teams)**
+1. Encrypt your secrets file: `sops --encrypt --age <recipient> .env > .env.enc`
+2. Decrypt at deploy time: `sops --decrypt .env.enc > .env && docker compose up -d`
+3. Commit only `.env.enc` to version control; never commit the plaintext `.env`.
 
 ### Per-CLI credentials
 
@@ -214,9 +258,9 @@ All published images are **multi-arch** (`linux/amd64` + `linux/arm64`), built n
 
 ## Operational notes
 
-- **Heartbeats & offline detection.** The daemon sends a heartbeat every 15s. If the Multica server misses three (45s) it marks the runtime *missing* and reclaims in-flight tasks. Don't run more than one container with the same `MULTICA_DAEMON_ID`.
-- **Crash recovery.** On startup the daemon tells the server "any tasks still marked as mine are no longer running"; combined with the server-side 30s reaper this means restarts of this container are safe.
-- **Workspaces.** Mount a persistent volume at `/workspaces` if you want repo clones to survive container restarts.
+- **Heartbeats & offline detection.** The daemon sends a heartbeat every 15s. If the Multica server misses three (45s) it marks the runtime *missing* and reclaims in-flight tasks. Never run more than one container with the same `MULTICA_DAEMON_ID` — see [MULTICA_DAEMON_ID uniqueness](#multica_daemon_id-uniqueness).
+- **Crash recovery.** On startup the daemon tells the server "any tasks still marked as mine are no longer running"; combined with the server-side 30s reaper this means restarts of this container are safe. The `restart: unless-stopped` policy in `docker-compose.yml` ensures the daemon comes back automatically after host reboots or crashes.
+- **Workspaces.** The `docker-compose.yml` declares a named Docker volume (`workspaces`) mounted at `/workspaces`. Repo clones survive `docker compose down` and restart automatically — no re-clone on each startup. For plain `docker run` usage, add `-v workspaces:/workspaces` to persist the directory.
 - **Non-root.** The container runs as `multica` (uid set by `useradd -m`). If you mount host directories, make sure they are readable by that uid.
 - **Logs.** The daemon logs to stdout (so `docker logs` / `docker compose logs -f` works). For more detail, exec into the container and run `multica daemon logs -f`.
 

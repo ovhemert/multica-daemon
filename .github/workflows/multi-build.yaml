@@ -125,13 +125,13 @@ jobs:
           annotations: ${{ steps.meta.outputs.annotations }}
           build-args: |
             ENABLED_CLIS=${{ matrix.variant == 'all' && 'claude,codex,copilot,gemini,opencode,pi' || matrix.variant }}
-          cache-from: type=gha,scope=${{ github.repository }}-${{ github.ref_name }}-${{ matrix.variant }}
-          cache-to: type=gha,scope=${{ github.repository }}-${{ github.ref_name }}-${{ matrix.variant }}
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/build-cache:${{ matrix.variant }}
+          cache-to: type=registry,ref=ghcr.io/${{ github.repository }}/build-cache:${{ matrix.variant }},mode=max
 
       - name: Run Trivy vulnerability scanner
         # non-blocking — remove continue-on-error once baseline is clean
         continue-on-error: true
-        uses: aquasecurity/trivy-action@0.31.0
+        uses: aquasecurity/trivy-action@0.35.0
         with:
           image-ref: ${{ env.GHCR_IMAGE }}@${{ steps.build.outputs.digest }}
           format: sarif
