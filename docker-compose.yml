@@ -1,0 +1,18 @@
+services:
+
+  runtime:
+    image: multica-runtime:dev
+    build:
+      context: ./src
+      dockerfile: ./Dockerfile
+    environment:
+      - MULTICA_APP_URL=${MULTICA_APP_URL:-http://localhost:3000}
+      - MULTICA_SERVER_URL=${MULTICA_SERVER_URL:-http://localhost:8080}
+      - MULTICA_TOKEN=${MULTICA_TOKEN}
+      - MULTICA_DAEMON_ID=${MULTICA_DAEMON_ID}
+      - CLAUDE_ENABLED=${CLAUDE_ENABLED:-}
+      - CODEX_ENABLED=${CODEX_ENABLED:-}
+      - COPILOT_ENABLED=${COPILOT_ENABLED:-}
+      - GEMINI_ENABLED=${GEMINI_ENABLED:-}
+      - OPENCODE_ENABLED=${OPENCODE_ENABLED:-}
+      - PI_ENABLED=${PI_ENABLED:-}
