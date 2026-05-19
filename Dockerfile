@@ -15,7 +15,7 @@ LABEL org.opencontainers.image.title="multica-daemon" \
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.version="${VERSION}"
 
-# Install CLI's
+# CLI versions
 ARG \
   CLAUDE_VERSION=2.1.143 \
   CODEX_VERSION=0.130.0 \
@@ -25,15 +25,23 @@ ARG \
   OPENCODE_VERSION=1.15.4 \
   PI_VERSION=0.75.3
 
-RUN npm install -g \
-  @anthropic-ai/claude-code@${CLAUDE_VERSION} \
-  @openai/codex@${CODEX_VERSION} \
-  @github/copilot@${COPILOT_VERSION} \
-  @google/gemini-cli@${GEMINI_VERSION} \
-  opencode-ai@${OPENCODE_VERSION} \
-  @earendil-works/pi-coding-agent@${PI_VERSION}
+# Which CLIs to install — comma-separated list of: claude,codex,copilot,gemini,opencode,pi
+# Default installs all CLIs (the "all" / "latest" image variant).
+ARG ENABLED_CLIS=claude,codex,copilot,gemini,opencode,pi
 
-# Multica (daemon)
+RUN set -e; \
+  for cli in $(printf '%s' "${ENABLED_CLIS}" | tr ',' ' '); do \
+    case "$cli" in \
+      claude)   npm install -g @anthropic-ai/claude-code@${CLAUDE_VERSION} ;; \
+      codex)    npm install -g @openai/codex@${CODEX_VERSION} ;; \
+      copilot)  npm install -g @github/copilot@${COPILOT_VERSION} ;; \
+      gemini)   npm install -g @google/gemini-cli@${GEMINI_VERSION} ;; \
+      opencode) npm install -g opencode-ai@${OPENCODE_VERSION} ;; \
+      pi)       npm install -g @earendil-works/pi-coding-agent@${PI_VERSION} ;; \
+    esac; \
+  done
+
+# Multica (daemon) — always installed regardless of ENABLED_CLIS
 RUN ARCH="$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')" \
   && curl -fsSL -o /tmp/multica.tgz "https://github.com/multica-ai/multica/releases/download/v${MULTICA_VERSION}/multica-cli-${MULTICA_VERSION}-linux-${ARCH}.tar.gz" \
   && tar -xzf /tmp/multica.tgz -C /usr/local/bin multica \
