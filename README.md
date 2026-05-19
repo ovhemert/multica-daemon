@@ -18,10 +18,9 @@ Each image contains:
   - `opencode-ai` — OpenCode
   - `@earendil-works/pi-coding-agent` — Pi
 - **An entrypoint** ([`src/docker-entrypoint.sh`](./src/docker-entrypoint.sh)) that:
-  1. Disables any CLI you have not opted-in via `*_ENABLED` env vars (by pointing its `MULTICA_*_PATH` at `/`)
-  2. Configures the daemon (`server_url`, `app_url`, `device_name`)
-  3. Logs in with `MULTICA_TOKEN`
-  4. Starts `multica daemon start --foreground` as PID 1
+  1. Configures the daemon (`server_url`, `app_url`, `device_name`)
+  2. Logs in with `MULTICA_TOKEN`
+  3. Starts `multica daemon start --foreground` as PID 1
 
 The container runs as a non-root `multica` user with `HOME=/multica` and a workspace root at `/workspaces` (override with `MULTICA_WORKSPACES_ROOT`).
 
@@ -44,7 +43,6 @@ The container runs as a non-root `multica` user with `HOME=/multica` and a works
    | `MULTICA_SERVER_URL` | URL of the Multica API/WebSocket server |
    | `MULTICA_TOKEN` | Runtime installer token (`mul_…`) |
    | `MULTICA_DAEMON_ID` | A unique name for this daemon (shown in the Runtimes page) |
-   | `<TOOL>_ENABLED` | `true` to expose that CLI to the daemon, anything else to hide it |
 
 3. **Start the runtime:**
 
@@ -72,8 +70,6 @@ docker run -d \
   -e MULTICA_SERVER_URL=https://api.multica.ai \
   -e MULTICA_TOKEN=mul_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \
   -e MULTICA_DAEMON_ID=daemon-01 \
-  -e CLAUDE_ENABLED=true \
-  -e CODEX_ENABLED=true \
   multica-runtime:dev
 ```
 
@@ -90,20 +86,11 @@ docker run -d \
 | `MULTICA_WORKSPACES_ROOT` | `/workspaces` | Where the daemon clones repositories |
 | `MULTICA_DAEMON_MAX_CONCURRENT_TASKS` | `20` (Multica default) | Per-daemon concurrent task limit |
 
-### Enabling / disabling CLIs
+### Installed CLIs
 
-For each bundled CLI there is a `<TOOL>_ENABLED` flag. When the flag is **not** `true`, the entrypoint sets the matching `MULTICA_<TOOL>_PATH` to `/`, which hides the binary from the daemon's CLI auto-detection without uninstalling it.
+Each CLI installed in the image is exposed to the daemon by default. Use an image variant when you want to run only one bundled CLI.
 
-| Flag | CLI |
-| --- | --- |
-| `CLAUDE_ENABLED` | Claude Code |
-| `CODEX_ENABLED` | Codex |
-| `COPILOT_ENABLED` | GitHub Copilot CLI |
-| `GEMINI_ENABLED` | Gemini |
-| `OPENCODE_ENABLED` | OpenCode |
-| `PI_ENABLED` | Pi |
-
-> Each enabled CLI shows up as its own runtime row in the Multica UI (one per *daemon × tool × workspace* combination).
+> Each installed CLI shows up as its own runtime row in the Multica UI (one per *daemon × tool × workspace* combination).
 
 ### Per-CLI credentials
 
