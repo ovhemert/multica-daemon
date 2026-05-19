@@ -13,6 +13,7 @@ ARG \
   CODEX_VERSION=0.130.0 \
   COPILOT_VERSION=1.0.48 \
   GEMINI_VERSION=0.42.0 \
+  MULTICA_VERSION=0.3.2 \
   OPENCODE_VERSION=1.15.4 \
   PI_VERSION=0.75.3
 
@@ -24,7 +25,9 @@ RUN npm install -g opencode-ai@${OPENCODE_VERSION}
 RUN npm install -g @earendil-works/pi-coding-agent@${PI_VERSION}
 
 # Multica (daemon)
-RUN curl -fsSL https://raw.githubusercontent.com/multica-ai/multica/main/scripts/install.sh | bash
+RUN ARCH="$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')" \
+  && curl -fsSL "https://github.com/multica-ai/multica/releases/download/v${MULTICA_VERSION}/multica-cli-${MULTICA_VERSION}-linux-${ARCH}.tar.gz" \
+    | tar -xz -C /usr/local/bin multica
 
 # Filesystem
 RUN mkdir -p /multica /workspaces
