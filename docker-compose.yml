@@ -3,7 +3,7 @@ services:
   runtime:
     image: multica-runtime:dev
     build:
-      context: ./src
+      context: .
       dockerfile: ./Dockerfile
     environment:
       - MULTICA_APP_URL=${MULTICA_APP_URL:-http://localhost:3000}
