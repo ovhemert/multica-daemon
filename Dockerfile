@@ -28,7 +28,7 @@ RUN curl -fsSL https://raw.githubusercontent.com/multica-ai/multica/main/scripts
 
 # Filesystem
 RUN mkdir -p /multica /workspaces
-COPY docker-entrypoint.sh /docker-entrypoint.sh
+COPY src/docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
 # Create non-root user so claude --dangerously-skip-permissions works
@@ -43,4 +43,4 @@ ENV \
   PATH=/usr/local/bin:/usr/bin:/bin \
   SHELL=/bin/bash
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT [/docker-entrypoint.sh]
