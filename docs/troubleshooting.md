@@ -6,16 +6,16 @@ The Runtimes page shows the daemon as offline or missing.
 
 ```bash
 # 1. Check the daemon process is running
-docker compose exec runtime multica daemon status
+docker compose exec daemon multica daemon status
 
 # 2. Tail live logs for error messages
-docker compose exec runtime multica daemon logs -f
+docker compose exec daemon multica daemon logs -f
 
 # 3. Verify the container is healthy
-docker inspect --format '{{.State.Health.Status}}' $(docker compose ps -q runtime)
+docker inspect --format '{{.State.Health.Status}}' $(docker compose ps -q daemon)
 
 # 4. If the container exited, read the last run's output
-docker compose logs runtime --tail 100
+docker compose logs daemon --tail 100
 ```
 
 Common causes:
@@ -30,11 +30,11 @@ A CLI is installed in the image but no runtime row appears for it in the Multica
 
 ```bash
 # Confirm the CLI binary exists and is executable
-docker compose exec runtime which claude
-docker compose exec runtime claude --version
+docker compose exec daemon which claude
+docker compose exec daemon claude --version
 
 # Check the daemon detected it on startup
-docker compose exec runtime multica daemon logs | grep -i "claude\|detected\|registered"
+docker compose exec daemon multica daemon logs | grep -i "claude\|detected\|registered"
 ```
 
 Common causes:
@@ -49,7 +49,7 @@ The daemon starts but tasks fail immediately with authentication errors.
 ```bash
 # Confirm the agent credential names configured in Multica match the CLI.
 # Multica injects these values into the agent process when a task launches.
-docker compose exec runtime multica daemon logs -f
+docker compose exec daemon multica daemon logs -f
 ```
 
 Common causes:
@@ -65,13 +65,13 @@ A task has been assigned but stays in queued and never starts.
 
 ```bash
 # Check how many tasks are currently running on this daemon
-docker compose exec runtime multica daemon status
+docker compose exec daemon multica daemon status
 
 # Check the MULTICA_DAEMON_MAX_CONCURRENT_TASKS setting
-docker compose exec runtime env | grep MULTICA_DAEMON_MAX_CONCURRENT_TASKS
+docker compose exec daemon env | grep MULTICA_DAEMON_MAX_CONCURRENT_TASKS
 
 # Look for task acceptance/rejection in the logs
-docker compose exec runtime multica daemon logs | grep -i "task\|queue\|accept\|reject"
+docker compose exec daemon multica daemon logs | grep -i "task\|queue\|accept\|reject"
 ```
 
 Common causes:

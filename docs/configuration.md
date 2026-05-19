@@ -21,7 +21,7 @@
 
 When `MULTICA_DAEMON_ID` is not set, the entrypoint falls back to `$HOSTNAME`, which Docker sets to the short container ID. That is unique by default.
 
-Set `MULTICA_DAEMON_ID` explicitly when you want a stable, human-readable name on the Runtimes page, such as `daemon-prod-01`. If you scale out with `docker compose up --scale runtime=N`, omit `MULTICA_DAEMON_ID` from your `.env` and let each replica get a distinct ID from its hostname.
+Set `MULTICA_DAEMON_ID` explicitly when you want a stable, human-readable name on the Runtimes page, such as `daemon-prod-01`. If you scale out with `docker compose up --scale daemon=N`, omit `MULTICA_DAEMON_ID` from your `.env` and let each replica get a distinct ID from its hostname.
 
 ## Secret Management
 
@@ -43,7 +43,7 @@ Keep the secrets file outside the repo and out of version control.
 
 ```yaml
 services:
-  runtime:
+  daemon:
     secrets:
       - multica_token
 secrets:

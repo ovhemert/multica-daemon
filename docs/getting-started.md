@@ -31,7 +31,7 @@
 
    ```bash
    docker compose up -d
-   docker compose logs -f runtime
+   docker compose logs -f daemon
    ```
 
 4. **Verify** by opening the Runtimes page in the Multica UI. You should see one row per enabled CLI for this daemon, all marked online. From there, you can assign issues or tasks and they will be picked up by this container.
