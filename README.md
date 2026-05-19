@@ -71,9 +71,10 @@ The container runs as a non-root `multica` user with `HOME=/multica` and a works
    | `GIT_AUTHOR_NAME` | Name used for git commits produced by agent tasks |
    | `GIT_AUTHOR_EMAIL` | Email used for git commits produced by agent tasks |
 
-   > **Do not commit live tokens to version control.** Use `--env-file` with a
-   > file outside your repo, Docker secrets, or SOPS/age — see
-   > [Secret management](#secret-management) for details.
+   > **Do not commit live runtime tokens to version control.** Use `--env-file`
+   > with a file outside your repo, Docker secrets, or SOPS/age for
+   > daemon-level secrets only — see [Secret management](#secret-management)
+   > for details. Configure agent CLI credentials in Multica, not in `.env`.
 
 3. **Start the runtime:**
 
@@ -154,8 +155,14 @@ each replica get a distinct ID from its hostname.
 
 ### Secret management
 
-Do **not** put live tokens in a committed `.env` file. Recommended approaches
-in order of increasing security:
+Do **not** put live runtime tokens in a committed `.env` file. The `.env`
+file is only for daemon-level settings such as `MULTICA_TOKEN`, URLs, daemon
+IDs, and git identity. Configure agent CLI credentials in Multica itself; do
+not add `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`,
+`GITHUB_TOKEN`, or similar agent secrets to `.env` files.
+
+Recommended approaches for daemon-level secrets, in order of increasing
+security:
 
 **`--env-file` (simplest, local only)**
 ```bash
@@ -181,49 +188,28 @@ entrypoint would need updating to read the file; contributions welcome.
 2. Decrypt at deploy time: `sops --decrypt .env.enc > .env && docker compose up -d`
 3. Commit only `.env.enc` to version control; never commit the plaintext `.env`.
 
-### Per-CLI credentials
+### Per-agent CLI credentials
 
-The Multica daemon does **not** ship the credentials each AI CLI needs. You must provide them yourself. The table below lists every bundled CLI, where to obtain its credential, and how to pass it to the container.
+The Multica daemon image does **not** ship the credentials each AI CLI needs.
+Add those credentials to the agent configuration in Multica. Multica injects
+the configured values into the agent process when it launches a task, so each
+agent can have its own credentials without exposing them to the whole runtime
+container.
 
-| CLI | Credential | Where to get it | Env var | Mount path |
-| --- | --- | --- | --- | --- |
-| **Claude Code** | Anthropic API key | [console.anthropic.com](https://console.anthropic.com) → API Keys | `ANTHROPIC_API_KEY` | `~/.config/anthropic` inside `/multica` |
-| **Codex** | OpenAI API key | [platform.openai.com](https://platform.openai.com) → API Keys | `OPENAI_API_KEY` | `~/.config/openai` inside `/multica` |
-| **GitHub Copilot** | GitHub token (with Copilot scope) | GitHub → Settings → Developer settings → Personal access tokens | `GITHUB_TOKEN` | `~/.config/github-copilot` inside `/multica` |
-| **Gemini** | Google AI Studio key | [aistudio.google.com](https://aistudio.google.com) → Get API key | `GEMINI_API_KEY` | `~/.config/google` inside `/multica` |
-| **OpenCode** | Provider-specific (OpenAI, Anthropic, …) | Same as the underlying provider | Provider's own env var | Provider's own `~/.config/…` path |
-| **Pi** | Pi API key | Your Pi account settings | `PI_API_KEY` | `~/.config/pi` inside `/multica` |
+| CLI | Credential | Where to get it | Configure in Multica as |
+| --- | --- | --- | --- |
+| **Claude Code** | Anthropic API key | [console.anthropic.com](https://console.anthropic.com) → API Keys | `ANTHROPIC_API_KEY` |
+| **Codex** | OpenAI API key | [platform.openai.com](https://platform.openai.com) → API Keys | `OPENAI_API_KEY` |
+| **GitHub Copilot** | GitHub token (with Copilot scope) | GitHub → Settings → Developer settings → Personal access tokens | `GITHUB_TOKEN` |
+| **Gemini** | Google AI Studio key | [aistudio.google.com](https://aistudio.google.com) → Get API key | `GEMINI_API_KEY` |
+| **OpenCode** | Provider-specific (OpenAI, Anthropic, ...) | Same as the underlying provider | Provider's own env var |
+| **Pi** | Pi API key | Your Pi account settings | `PI_API_KEY` |
 
-**Option A — environment variables** (recommended for Docker / CI):
-
-```bash
-docker run -d \
-  -e MULTICA_TOKEN=mul_… \
-  -e MULTICA_DAEMON_ID=daemon-01 \
-  -e MULTICA_APP_URL=https://app.multica.ai \
-  -e MULTICA_SERVER_URL=https://api.multica.ai \
-  -e ANTHROPIC_API_KEY=sk-ant-… \
-  -e OPENAI_API_KEY=sk-… \
-  -e GITHUB_TOKEN=ghp_… \
-  -e GEMINI_API_KEY=… \
-  ghcr.io/ovhemert/multica-daemon:latest
-```
-
-**Option B — credentials directory mount** (useful when CLIs store OAuth tokens or config files):
-
-```bash
-# The container's $HOME is /multica.
-# Mirror the same directory layout your local ~/.config has.
-docker run -d \
-  -e MULTICA_TOKEN=mul_… \
-  -e MULTICA_DAEMON_ID=daemon-01 \
-  -e MULTICA_APP_URL=https://app.multica.ai \
-  -e MULTICA_SERVER_URL=https://api.multica.ai \
-  -v /path/to/host-credentials:/multica \
-  ghcr.io/ovhemert/multica-daemon:latest
-```
-
-The `multica` user inside the container must be able to read the mounted path. If ownership is wrong, add `--user $(id -u)` or `chown` the host directory.
+Do not pass these credentials through Docker `-e` flags, Compose `.env`
+files, `--env-file`, Docker secrets mounted into the container, or host
+credential directory mounts. Those approaches make the secret part of the
+runtime configuration. Agent credentials should live with the Multica agent
+configuration and be scoped to the specific agent process that needs them.
 
 ## Image variants
 
@@ -246,7 +232,7 @@ All published images are **multi-arch** (`linux/amd64` + `linux/arm64`), built n
 ├── Dockerfile                    # Builds the all-in-one runtime image
 ├── docker-bake.hcl               # Multi-variant build definition
 ├── docker-compose.yml            # Convenience runner for local development
-├── .env.example                  # Template for local secrets / config
+├── .env.example                  # Template for daemon runtime config
 ├── CHANGELOG.md                  # Version history
 ├── CONTRIBUTING.md               # Dockerfile and release conventions
 ├── SECURITY.md                   # How to report token leaks / image vulns
@@ -313,17 +299,15 @@ Common causes:
 The daemon starts but tasks fail immediately with authentication errors.
 
 ```bash
-# Inspect env vars as seen by the running container
-docker compose exec runtime env | grep -E 'ANTHROPIC|OPENAI|GITHUB|GEMINI|PI'
-
-# Run the CLI directly to surface the auth error
-docker compose exec runtime claude --version
-docker compose exec runtime claude "echo hello"
+# Confirm the agent credential names configured in Multica match the CLI.
+# Multica injects these values into the agent process when a task launches.
+docker compose exec runtime multica daemon logs -f
 ```
 
 Common causes:
 
-- The API key env var is missing or set to a placeholder value.
+- The agent configuration in Multica is missing the required credential.
+- The configured credential name does not match what the CLI expects.
 - The key has been revoked or has insufficient scope — regenerate and redeploy.
 - For Copilot: `GITHUB_TOKEN` must have the `copilot` scope enabled.
 

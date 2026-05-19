@@ -15,7 +15,7 @@ Thanks for helping improve multica-daemon!
 ### Entrypoint (`src/docker-entrypoint.sh`)
 
 - The script must end with `exec multica daemon start --foreground` (the `exec` is non-negotiable — it replaces the shell as PID 1 so `SIGTERM` reaches the daemon on `docker stop`).
-- All required env vars are validated implicitly by the commands that consume them. If you add a new required var, document it in the README **Configuration reference** table and in `.env.example`.
+- All required daemon env vars are validated implicitly by the commands that consume them. If you add a new daemon-level var, document it in the README **Configuration reference** table and in `.env.example`. Agent CLI credentials belong in Multica agent configuration, not in `.env.example`.
 
 ### Versioning and releases
 
@@ -25,7 +25,7 @@ Thanks for helping improve multica-daemon!
 ## Pull request checklist
 
 - [ ] `docker buildx bake` (or `docker build`) completes without errors.
-- [ ] New env vars are documented in README and `.env.example`.
+- [ ] New daemon env vars are documented in README and `.env.example`; agent CLI credentials are documented as Multica agent configuration.
 - [ ] CHANGELOG entry added under `[Unreleased]`.
 - [ ] No secrets, API keys, or tokens committed (check with `git log -p`).
 
