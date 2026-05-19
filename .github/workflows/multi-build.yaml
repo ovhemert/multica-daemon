@@ -4,7 +4,7 @@
 # Tagging scheme
 # ──────────────
 #  On semver tag   : :v1.2.3-<variant>  (per-variant)
-#                    :v1.2.3  :v1.2.3-all  (bundled image)
+#                    :v1.2.3  :v1.2.3-all  :latest  (bundled 'all' image only)
 name: Build multi-arch Docker images (all variants)
 
 on:
@@ -72,6 +72,12 @@ jobs:
         uses: docker/metadata-action@030e881283bb7a6894de51c315a6bfe6a94e05cf # v6.0.0
         with:
           images: ${{ env.GHCR_IMAGE }}
+          # Disable auto-latest so only the explicit type=raw,value=latest line
+          # (enabled only for the 'all' variant) controls the :latest tag.
+          # Without this, metadata-action adds :latest to every variant on a
+          # stable semver push, causing a race: whichever job finishes last wins.
+          flavor: |
+            latest=false
           annotations: |
             type=org.opencontainers.image.description,value=${{ github.event.repository.description || 'No description provided' }}
           tags: |
