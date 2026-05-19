@@ -17,12 +17,12 @@ LABEL org.opencontainers.image.title="multica-daemon" \
 
 # CLI versions
 ARG \
-  CLAUDE_VERSION=2.1.143 \
-  CODEX_VERSION=0.130.0 \
-  COPILOT_VERSION=1.0.48 \
+  CLAUDE_VERSION=2.1.144 \
+  CODEX_VERSION=0.131.0 \
+  COPILOT_VERSION=1.0.50 \
   GEMINI_VERSION=0.42.0 \
-  MULTICA_VERSION=0.3.2 \
-  OPENCODE_VERSION=1.15.4 \
+  MULTICA_VERSION=0.3.3 \
+  OPENCODE_VERSION=1.15.5 \
   PI_VERSION=0.75.3
 
 # Which CLIs to install — comma-separated list of: claude,codex,copilot,gemini,opencode,pi
