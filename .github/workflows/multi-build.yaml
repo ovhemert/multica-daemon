@@ -56,7 +56,7 @@ jobs:
       pages: none
       pull-requests: read
       repository-projects: read
-      security-events: read
+      security-events: write
       statuses: read
 
     runs-on: ubuntu-latest
@@ -121,6 +121,27 @@ jobs:
             ENABLED_CLIS=${{ matrix.variant == 'all' && 'claude,codex,copilot,gemini,opencode,pi' || matrix.variant }}
           cache-from: type=gha,scope=${{ github.repository }}-${{ github.ref_name }}-${{ matrix.variant }}
           cache-to: type=gha,scope=${{ github.repository }}-${{ github.ref_name }}-${{ matrix.variant }}
+
+      - name: Run Trivy vulnerability scanner
+        # non-blocking — remove continue-on-error once baseline is clean
+        continue-on-error: true
+        uses: aquasecurity/trivy-action@0.31.0
+        with:
+          image-ref: ${{ env.GHCR_IMAGE }}@${{ steps.build.outputs.digest }}
+          format: sarif
+          output: trivy-results.sarif
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: os,library
+          severity: CRITICAL,HIGH
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        if: always()
+        continue-on-error: true
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-results.sarif
+          category: trivy-${{ matrix.variant }}
 
 
   report-sizes:
