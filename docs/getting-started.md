@@ -45,13 +45,13 @@ docker compose down
 ## Plain Docker
 
 ```bash
-docker build -t multica-runtime:dev .
+docker build -t multica-daemon:dev .
 
 docker run -d \
-  --name multica-runtime \
+  --name multica-daemon \
   -e MULTICA_APP_URL=https://app.multica.ai \
   -e MULTICA_SERVER_URL=https://api.multica.ai \
   -e MULTICA_TOKEN=mul_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \
   -e MULTICA_DAEMON_ID=daemon-01 \
-  multica-runtime:dev
+  multica-daemon:dev
 ```
