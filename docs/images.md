@@ -20,21 +20,3 @@ All published images are **multi-arch** (`linux/amd64` + `linux/arm64`), built n
 | --- | --- | --- | --- | --- | --- | --- |
 | `v0.3.3` | `2.1.144` | `0.131.0` | `1.0.50` | `0.42.0` | `1.15.5` | `0.75.3` |
 | `v0.3.2` | `2.1.143` | `0.130.0` | `1.0.48` | `0.42.0` | `1.15.4` | `0.75.3` |
-
-## Repository Layout
-
-```text
-.
-|-- Dockerfile                    # Builds the all-in-one runtime image
-|-- docker-bake.hcl               # Multi-variant build definition
-|-- docker-compose.yml            # Convenience runner for local development
-|-- .env.example                  # Template for daemon runtime config
-|-- CHANGELOG.md                  # Version history
-|-- CONTRIBUTING.md               # Dockerfile and release conventions
-|-- SECURITY.md                   # How to report token leaks / image vulnerabilities
-|-- docs/                         # Project documentation
-|-- src/
-|   |-- docker-entrypoint.sh      # PID 1: configure + login + start daemon
-|-- .github/workflows/
-    |-- multi-build.yaml          # Multi-arch GHCR build and publish
-```
