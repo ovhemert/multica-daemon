@@ -4,12 +4,12 @@ name: Build multi arch Docker Image with separate Github Runners
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - 'Dockerfile'
-      - '.github/workflows/multi-build.yaml'
+  #push:
+  #  branches:
+  #    - main
+  #  paths:
+  #    - 'Dockerfile'
+  #    - '.github/workflows/multi-build.yaml'
 env:
   # The name of the Docker image to be built and pushed to GHCR
   # The image name is derived from the GitHub repository name and the GitHub Container Registry (GHCR) URL.
