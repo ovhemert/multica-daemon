@@ -45,11 +45,6 @@ logs/
 ehthumbs.db
 Thumbs.db
 
-# Docker specific
-Dockerfile
-.dockerignore
-docker-compose*.yml
-
 # Documentation
 README.md
 CHANGELOG.md
