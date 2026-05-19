@@ -6,8 +6,13 @@ set -eou pipefail
 if [ "${CLAUDE_ENABLED:-false}" != "true" ]; then export MULTICA_CLAUDE_PATH=/; fi
 if [ "${CODEX_ENABLED:-false}" != "true" ]; then export MULTICA_CODEX_PATH=/; fi
 if [ "${COPILOT_ENABLED:-false}" != "true" ]; then export MULTICA_COPILOT_PATH=/; fi
+if [ "${CURSOR_ENABLED:-false}" != "true" ]; then export MULTICA_CURSOR_PATH=/; fi
 if [ "${GEMINI_ENABLED:-false}" != "true" ]; then export MULTICA_GEMINI_PATH=/; fi
+if [ "${HERMES_ENABLED:-false}" != "true" ]; then export MULTICA_HERMES_PATH=/; fi
+if [ "${KIMI_ENABLED:-false}" != "true" ]; then export MULTICA_KIMI_PATH=/; fi
+if [ "${KIRO_ENABLED:-false}" != "true" ]; then export MULTICA_KIRO_PATH=/; fi
 if [ "${OPENCODE_ENABLED:-false}" != "true" ]; then export MULTICA_OPENCODE_PATH=/; fi
+if [ "${OPENCLAW_ENABLED:-false}" != "true" ]; then export MULTICA_OPENCLAW_PATH=/; fi
 if [ "${PI_ENABLED:-false}" != "true" ]; then export MULTICA_PI_PATH=/; fi
 
 # Set daemon configuration

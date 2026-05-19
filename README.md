@@ -14,8 +14,13 @@ Each image contains:
   - `@anthropic-ai/claude-code` — Claude Code
   - `@openai/codex` — Codex
   - `@github/copilot` — GitHub Copilot CLI
+  - `@nothumanwork/cursor-agent-cli` — Cursor
   - `@google/gemini-cli` — Gemini
+  - `hermes-coding` — Hermes
+  - `kimi-code` — Kimi
+  - `kiro-cli` — Kiro CLI
   - `opencode-ai` — OpenCode
+  - `openclaw` — OpenClaw
   - `@earendil-works/pi-coding-agent` — Pi
 - **An entrypoint** ([`src/docker-entrypoint.sh`](./src/docker-entrypoint.sh)) that:
   1. Disables any CLI you have not opted-in via `*_ENABLED` env vars (by pointing its `MULTICA_*_PATH` at `/`)
@@ -99,18 +104,37 @@ For each bundled CLI there is a `<TOOL>_ENABLED` flag. When the flag is **not** 
 | `CLAUDE_ENABLED` | Claude Code |
 | `CODEX_ENABLED` | Codex |
 | `COPILOT_ENABLED` | GitHub Copilot CLI |
+| `CURSOR_ENABLED` | Cursor |
 | `GEMINI_ENABLED` | Gemini |
+| `HERMES_ENABLED` | Hermes |
+| `KIMI_ENABLED` | Kimi |
+| `KIRO_ENABLED` | Kiro CLI |
 | `OPENCODE_ENABLED` | OpenCode |
+| `OPENCLAW_ENABLED` | OpenClaw |
 | `PI_ENABLED` | Pi |
 
 > Each enabled CLI shows up as its own runtime row in the Multica UI (one per *daemon × tool × workspace* combination).
 
 ### Per-CLI credentials
 
-The Multica daemon does **not** ship the credentials each AI CLI needs (Anthropic API key, OpenAI key, Google API key, GitHub token, …). You must provide those yourself by either:
+The Multica daemon does **not** ship the credentials each AI CLI needs. You must provide those yourself by either:
 
 - Mounting a credentials directory into `/multica` (the in-container `$HOME`), so the per-CLI `~/.config/...` files are present, **or**
-- Passing each CLI's expected env var (e.g. `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`, `GITHUB_TOKEN`, …) into the container.
+- Passing each CLI's expected env var into the container.
+
+| CLI | Required credentials / env vars |
+| --- | --- |
+| Claude Code | `ANTHROPIC_API_KEY` |
+| Codex | `OPENAI_API_KEY` |
+| GitHub Copilot CLI | `GITHUB_TOKEN` (personal access token with Copilot access, or OAuth via `copilot auth login`) |
+| Cursor | `CURSOR_ACCESS_TOKEN` or sign in via `cursor-agent auth login` |
+| Gemini | `GEMINI_API_KEY` (or `GOOGLE_API_KEY`) |
+| Hermes | `HERMES_API_KEY` |
+| Kimi | `MOONSHOT_API_KEY` (Moonshot AI platform API key) |
+| Kiro CLI | AWS Builder ID — sign in via `kiro auth login` or set `AWS_BUILDER_ID_TOKEN`; may need additional system packages (`libasound2`, `libnss3`, `libatk-bridge2.0-0`) |
+| OpenCode | `OPENAI_API_KEY` or provider-specific key (configurable in `~/.config/opencode`) |
+| OpenClaw | `OPENCLAW_API_KEY` or provider credentials per configured channel |
+| Pi | `PI_API_KEY` |
 
 ## Image variants
 
@@ -122,8 +146,13 @@ The Multica daemon does **not** ship the credentials each AI CLI needs (Anthropi
 | `…:claude` | Daemon + Claude Code only |
 | `…:codex` | Daemon + Codex only |
 | `…:copilot` | Daemon + Copilot only |
+| `…:cursor` | Daemon + Cursor only |
 | `…:gemini` | Daemon + Gemini only |
+| `…:hermes` | Daemon + Hermes only |
+| `…:kimi` | Daemon + Kimi only |
+| `…:kiro` | Daemon + Kiro CLI only |
 | `…:opencode` | Daemon + OpenCode only |
+| `…:openclaw` | Daemon + OpenClaw only |
 | `…:pi` | Daemon + Pi only |
 
 All published images are **multi-arch** (`linux/amd64` + `linux/arm64`), built natively on matching GitHub-hosted runners — see [`.github/workflows/multi-build.yaml`](./.github/workflows/multi-build.yaml).
