@@ -3,8 +3,6 @@
 #
 # Tagging scheme
 # ──────────────
-#  On main branch  : :<variant>   (e.g. :claude, :codex, …)
-#                    :all  :latest  (bundled image)
 #  On semver tag   : :v1.2.3-<variant>  (per-variant)
 #                    :v1.2.3  :v1.2.3-all  (bundled image)
 name: Build multi-arch Docker images (all variants)
@@ -12,12 +10,12 @@ name: Build multi-arch Docker images (all variants)
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
-    paths:
-      - 'Dockerfile'
-      - 'docker-bake.hcl'
-      - '.github/workflows/multi-build.yaml'
+    # branches:
+    #   - main
+    # paths:
+    #   - 'Dockerfile'
+    #   - 'docker-bake.hcl'
+    #   - '.github/workflows/multi-build.yaml'
     tags:
       - 'v*'
 
@@ -79,8 +77,6 @@ jobs:
           tags: |
             # Per-variant tag on the main branch (all variants)
             type=raw,value=${{ matrix.variant }},enable=${{ github.ref_name == 'main' }}
-            # :latest only on the bundled 'all' variant
-            # type=raw,value=latest,enable=${{ github.ref_name == 'main' && matrix.variant == 'all' }}
             # Semver tags for non-all variants: v1.2.3-claude, v1.2.3-codex, …
             type=semver,pattern=v{{version}}-${{ matrix.variant }},enable=${{ matrix.variant != 'all' }}
             # Semver tags and :latest for the bundled variant: v1.2.3 and v1.2.3-all
