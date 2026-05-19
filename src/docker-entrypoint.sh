@@ -18,5 +18,5 @@ multica config set app_url ${MULTICA_APP_URL}
 # Login
 multica login --token ${MULTICA_TOKEN}
 
-# Start daemon
-multica daemon start --foreground
+# Start daemon (exec replaces bash as PID 1 so SIGTERM reaches the daemon)
+exec multica daemon start --foreground
