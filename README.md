@@ -25,9 +25,6 @@ Each image contains:
 
 The container runs as a non-root `multica` user with `HOME=/multica` and a workspace root at `/workspaces` (override with `MULTICA_WORKSPACES_ROOT`).
 
-> [!NOTE]
-> This project is a work in progress. See [`TODO.md`](./TODO.md) for the full list of known gaps (missing CLIs from the official 11, broken Compose build context, multi-arch publishing, image-per-CLI variants, secrets handling, etc.).
-
 ## Quick start (Docker Compose)
 
 1. **Get a runtime installer token** from the Multica UI (Settings → Runtimes → *Install a runtime*). It looks like `mul_…`.
@@ -115,11 +112,9 @@ The Multica daemon does **not** ship the credentials each AI CLI needs (Anthropi
 - Mounting a credentials directory into `/multica` (the in-container `$HOME`), so the per-CLI `~/.config/...` files are present, **or**
 - Passing each CLI's expected env var (e.g. `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`, `GITHUB_TOKEN`, …) into the container.
 
-See [`TODO.md`](./TODO.md) for the still-open question of how to standardize this.
-
 ## Image variants
 
-> Planned — not all of these exist yet. See [`TODO.md`](./TODO.md).
+> Planned — not all of these exist yet.
 
 | Tag | Contents |
 | --- | --- |
