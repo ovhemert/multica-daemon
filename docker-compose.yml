@@ -1,7 +1,7 @@
 services:
 
-  runtime:
-    image: multica-runtime:dev
+  daemon:
+    image: multica-daemon:dev
     build:
       context: .
       dockerfile: ./Dockerfile

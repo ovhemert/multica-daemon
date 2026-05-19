@@ -4,7 +4,7 @@
 
 **Do not open a public GitHub issue for security vulnerabilities.**
 
-Please email **osmond@vanhemert.nu** with:
+Please contact [@ovhemert](https://github.com/ovhemert) directly with:
 
 - A description of the vulnerability and its potential impact.
 - Steps to reproduce or a proof-of-concept (if available).
@@ -30,8 +30,9 @@ Vulnerabilities in the upstream Multica server, AI CLI tools, or GitHub Actions 
 ### Credentials at runtime
 
 - `MULTICA_TOKEN` is a **runtime installer token** used only at container startup (by `multica login`). It is passed as an environment variable and is not baked into the image.
-- AI CLI credentials (`ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`, `GITHUB_TOKEN`, etc.) are never stored in the image. They must be injected at runtime via environment variables or by mounting a credentials directory into `/multica` (the container `$HOME`).
-- Do **not** hardcode any token in `docker-compose.yml`, the Dockerfile, or CI configuration. Use `.env` files (excluded from git via `.gitignore`) or your secret manager of choice.
+- AI CLI credentials (`ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`, `GITHUB_TOKEN`, etc.) are never stored in the image and should not be provided through `.env` files, Docker `-e` flags, `--env-file`, Docker secrets mounted into the container, or credentials directory mounts under `/multica`.
+- Add AI CLI credentials to the agent configuration in Multica. Multica injects those credentials into the specific agent process when it launches, keeping credentials scoped per agent instead of exposing them to the whole runtime container.
+- Do **not** hardcode any token in `docker-compose.yml`, the Dockerfile, or CI configuration. Use `.env` files only for daemon-level runtime settings such as `MULTICA_TOKEN`, URLs, daemon IDs, and git identity.
 
 ### Image supply chain
 
