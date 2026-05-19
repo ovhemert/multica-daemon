@@ -43,4 +43,4 @@ ENV \
   PATH=/usr/local/bin:/usr/bin:/bin \
   SHELL=/bin/bash
 
-ENTRYPOINT [/docker-entrypoint.sh]
+ENTRYPOINT ["/docker-entrypoint.sh"]
