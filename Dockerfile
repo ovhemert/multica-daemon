@@ -35,8 +35,9 @@ RUN npm install -g \
 
 # Multica (daemon)
 RUN ARCH="$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')" \
-  && curl -fsSL "https://github.com/multica-ai/multica/releases/download/v${MULTICA_VERSION}/multica-cli-${MULTICA_VERSION}-linux-${ARCH}.tar.gz" \
-    | tar -xz -C /usr/local/bin multica
+  && curl -fsSL -o /tmp/multica.tgz "https://github.com/multica-ai/multica/releases/download/v${MULTICA_VERSION}/multica-cli-${MULTICA_VERSION}-linux-${ARCH}.tar.gz" \
+  && tar -xzf /tmp/multica.tgz -C /usr/local/bin multica \
+  && rm -f /tmp/multica.tgz
 
 # Filesystem
 RUN mkdir -p /multica /workspaces
