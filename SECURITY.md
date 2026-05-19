@@ -4,7 +4,7 @@
 
 **Do not open a public GitHub issue for security vulnerabilities.**
 
-Please email **osmond@vanhemert.nu** with:
+Please contact [@ovhemert](https://github.com/ovhemert) directly with:
 
 - A description of the vulnerability and its potential impact.
 - Steps to reproduce or a proof-of-concept (if available).
