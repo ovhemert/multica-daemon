@@ -36,6 +36,7 @@ Each image contains:
   - `@openai/codex` - Codex
   - `@github/copilot` - GitHub Copilot CLI
   - `@google/gemini-cli` - Gemini
+  - `hermes-agent` (NousResearch) - Hermes (installed via script)
   - `opencode-ai` - OpenCode
   - `@earendil-works/pi-coding-agent` - Pi
 - **An entrypoint** ([`src/docker-entrypoint.sh`](../src/docker-entrypoint.sh)) that:

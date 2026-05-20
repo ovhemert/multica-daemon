@@ -25,9 +25,9 @@ ARG \
   OPENCODE_VERSION=1.15.5 \
   PI_VERSION=0.75.3
 
-# Which CLIs to install — comma-separated list of: claude,codex,copilot,gemini,opencode,pi
+# Which CLIs to install — comma-separated list of: claude,codex,copilot,gemini,hermes,opencode,pi
 # Default installs all CLIs (the "all" / "latest" image variant).
-ARG ENABLED_CLIS=claude,codex,copilot,gemini,opencode,pi
+ARG ENABLED_CLIS=claude,codex,copilot,gemini,hermes,opencode,pi
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -38,6 +38,7 @@ RUN set -e; \
       codex)    npm install -g "@openai/codex@${CODEX_VERSION}" ;; \
       copilot)  npm install -g "@github/copilot@${COPILOT_VERSION}" ;; \
       gemini)   npm install -g "@google/gemini-cli@${GEMINI_VERSION}" ;; \
+      hermes)   curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash ;; \
       opencode) npm install -g "opencode-ai@${OPENCODE_VERSION}" ;; \
       pi)       npm install -g "@earendil-works/pi-coding-agent@${PI_VERSION}" ;; \
     esac; \

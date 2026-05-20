@@ -42,7 +42,7 @@ variable "OPENCODE_VERSION" { default = "1.15.5" }
 variable "PI_VERSION"       { default = "0.75.3" }
 
 group "default" {
-  targets = ["claude", "codex", "copilot", "gemini", "opencode", "pi", "all"]
+  targets = ["claude", "codex", "copilot", "gemini", "hermes", "opencode", "pi", "all"]
 }
 
 # Shared base target — all variants inherit from this.
@@ -97,6 +97,15 @@ target "gemini" {
   ])
 }
 
+target "hermes" {
+  inherits = ["_common"]
+  args     = { ENABLED_CLIS = "hermes" }
+  tags = compact([
+    "${REGISTRY}:hermes",
+    VERSION != "latest" ? "${REGISTRY}:${VERSION}-hermes" : "",
+  ])
+}
+
 target "opencode" {
   inherits = ["_common"]
   args     = { ENABLED_CLIS = "opencode" }
@@ -118,7 +127,7 @@ target "pi" {
 # Bundled image — all CLIs included. Carries the :latest and :all tags.
 target "all" {
   inherits = ["_common"]
-  args     = { ENABLED_CLIS = "claude,codex,copilot,gemini,opencode,pi" }
+  args     = { ENABLED_CLIS = "claude,codex,copilot,gemini,hermes,opencode,pi" }
   tags = compact([
     "${REGISTRY}:all",
     "${REGISTRY}:latest",
