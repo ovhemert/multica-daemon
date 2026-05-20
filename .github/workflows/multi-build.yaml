@@ -173,10 +173,12 @@ jobs:
         env:
           IMAGE: ${{ env.GHCR_IMAGE }}
         run: |
-          echo "## Image Size Report" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "| Variant | Platform | Compressed size |" >> "$GITHUB_STEP_SUMMARY"
-          echo "|---------|----------|-----------------|" >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "## Image Size Report"
+            echo ""
+            echo "| Variant | Platform | Compressed size |"
+            echo "|---------|----------|-----------------|"
+          } >> "$GITHUB_STEP_SUMMARY"
 
           for variant in claude codex copilot gemini opencode pi all; do
             tag="${variant}"
@@ -191,7 +193,7 @@ jobs:
               | select(.platform.os != "unknown")
               | "\($v) | \(.platform.os)/\(.platform.architecture) | \(.size / 1048576 * 10 | round / 10) MB"
             ' | while IFS='|' read -r v platform size; do
-              echo "| $(echo $v | xargs) | $(echo $platform | xargs) | $(echo $size | xargs) (compressed) |" >> "$GITHUB_STEP_SUMMARY"
+              echo "| $(echo "$v" | xargs) | $(echo "$platform" | xargs) | $(echo "$size" | xargs) (compressed) |" >> "$GITHUB_STEP_SUMMARY"
             done
           done
 
