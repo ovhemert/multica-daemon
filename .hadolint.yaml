@@ -1,4 +1,4 @@
 # DL3008: apt-get version pinning is impractical for Debian/Ubuntu base images;
 # specific package versions are not stable across point releases.
-ignore:
+ignored:
   - DL3008

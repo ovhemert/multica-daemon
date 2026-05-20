@@ -29,15 +29,17 @@ ARG \
 # Default installs all CLIs (the "all" / "latest" image variant).
 ARG ENABLED_CLIS=claude,codex,copilot,gemini,opencode,pi
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 RUN set -e; \
   for cli in $(printf '%s' "${ENABLED_CLIS}" | tr ',' ' '); do \
     case "$cli" in \
-      claude)   npm install -g @anthropic-ai/claude-code@${CLAUDE_VERSION} ;; \
-      codex)    npm install -g @openai/codex@${CODEX_VERSION} ;; \
-      copilot)  npm install -g @github/copilot@${COPILOT_VERSION} ;; \
-      gemini)   npm install -g @google/gemini-cli@${GEMINI_VERSION} ;; \
-      opencode) npm install -g opencode-ai@${OPENCODE_VERSION} ;; \
-      pi)       npm install -g @earendil-works/pi-coding-agent@${PI_VERSION} ;; \
+      claude)   npm install -g "@anthropic-ai/claude-code@${CLAUDE_VERSION}" ;; \
+      codex)    npm install -g "@openai/codex@${CODEX_VERSION}" ;; \
+      copilot)  npm install -g "@github/copilot@${COPILOT_VERSION}" ;; \
+      gemini)   npm install -g "@google/gemini-cli@${GEMINI_VERSION}" ;; \
+      opencode) npm install -g "opencode-ai@${OPENCODE_VERSION}" ;; \
+      pi)       npm install -g "@earendil-works/pi-coding-agent@${PI_VERSION}" ;; \
     esac; \
   done
 
