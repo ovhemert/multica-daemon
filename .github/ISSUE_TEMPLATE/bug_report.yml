@@ -1,0 +1,66 @@
+name: Bug report
+description: Report a problem with the multica-daemon image or entrypoint
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before opening a new issue, check the [existing issues](https://github.com/ovhemert/multica-daemon/issues) to avoid duplicates.
+
+  - type: input
+    id: image_tag
+    attributes:
+      label: Image tag
+      description: The full image reference you are running (e.g. `ghcr.io/ovhemert/multica-daemon:1.2.3`).
+      placeholder: ghcr.io/ovhemert/multica-daemon:x.y.z
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - linux/amd64
+        - linux/arm64
+        - Other (describe below)
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear description of the bug and what you expected instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. docker run ...
+        2. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: docker_inspect
+    attributes:
+      label: docker inspect output
+      description: Run `docker inspect <container>` and paste the output here.
+      render: json
+
+  - type: textarea
+    id: daemon_logs
+    attributes:
+      label: multica daemon logs
+      description: Run `multica daemon logs` inside the container and paste the output here.
+      render: shell
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Additional context
+      description: Anything else that might be relevant (host OS, Docker version, compose config, etc.).
