@@ -1,7 +1,5 @@
-IMAGE    ?= multica-daemon
-TAG      ?= dev
 REGISTRY ?= ghcr.io/ovhemert/multica-daemon
-export IMAGE TAG REGISTRY
+export REGISTRY
 
 .PHONY: help build run logs shell push clean
 .DEFAULT_GOAL := help
