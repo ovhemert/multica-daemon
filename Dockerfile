@@ -39,8 +39,10 @@ RUN set -e; \
       copilot)  npm install -g "@github/copilot@${COPILOT_VERSION}" ;; \
       gemini)   npm install -g "@google/gemini-cli@${GEMINI_VERSION}" ;; \
       hermes)   curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh \
-                  | UV_INSTALL_DIR=/usr/local/bin UV_DATA_DIR=/usr/local/share/uv bash \
-                && chmod -R a+rX /usr/local/lib/hermes-agent /usr/local/share/uv ;; \
+                  | UV_INSTALL_DIR=/usr/local/bin UV_DATA_DIR=/usr/local/share/uv UV_PYTHON_INSTALL_DIR=/usr/local/share/uv/python /bin/bash \
+                && for path in /usr/local/lib/hermes-agent /usr/local/share/uv; do \
+                     [ ! -e "$path" ] || chmod -R a+rX "$path"; \
+                   done ;; \
       opencode) npm install -g "opencode-ai@${OPENCODE_VERSION}" ;; \
       pi)       npm install -g "@earendil-works/pi-coding-agent@${PI_VERSION}" ;; \
     esac; \
