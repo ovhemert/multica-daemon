@@ -2,9 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project uses calendar-based version tags (`MULTICA_VERSION` of the bundled daemon CLI, e.g. `v0.3.3`).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project uses calendar-based version tags (`MULTICA_VERSION` of the bundled daemon CLI, e.g. `v0.3.4`).
 
 ## [Unreleased]
+
+## [v0.3.4] — 2026-05-21
+
+### Added
+- Hermes agent image variant and bundled all-in-one runtime support.
 
 ## [v0.3.3] — 2026-05-19
 
@@ -39,7 +44,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `HEALTHCHECK` using `multica daemon status`.
 - MIT license.
 
-[Unreleased]: https://github.com/ovhemert/multica-daemon/compare/v0.3.3...HEAD
+[Unreleased]: https://github.com/ovhemert/multica-daemon/compare/v0.3.4...HEAD
+[v0.3.4]: https://github.com/ovhemert/multica-daemon/compare/v0.3.3...v0.3.4
 [v0.3.3]: https://github.com/ovhemert/multica-daemon/compare/v0.3.2...v0.3.3
 [v0.3.2]: https://github.com/ovhemert/multica-daemon/compare/v0.3.0...v0.3.2
 [v0.3.0]: https://github.com/ovhemert/multica-daemon/releases/tag/v0.3.0

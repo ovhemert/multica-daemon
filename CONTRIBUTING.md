@@ -7,7 +7,7 @@ Thanks for helping improve multica-daemon!
 ### Dockerfile
 
 - **One `RUN` layer per concern** (apt, CLIs, multica download, filesystem setup). Keep layers lean: chain commands with `&&`, clean package-manager caches in the same layer.
-- **Pin every version** — no `@latest`, no `latest` npm tags. All CLI versions live in `ARG` declarations at the top of the `production` stage and are mirrored in `docker-bake.hcl` as top-level `variable` blocks so CI can override them at build time.
+- **Pin package versions when the upstream install path supports it** — no `@latest`, no `latest` npm tags. Versioned CLI packages live in `ARG` declarations at the top of the `production` stage and are mirrored in `docker-bake.hcl` as top-level `variable` blocks so CI can override them at build time. CLIs installed from upstream scripts, such as Hermes, must be documented as unpinned.
 - **`ENABLED_CLIS` build arg** — new CLIs must be wired into the `for cli in …; do case … esac; done` loop in the Dockerfile *and* added as a dedicated `target` in `docker-bake.hcl`.
 - **Non-root user** — the container runs as the `multica` user. Any filesystem path that the daemon writes to at runtime (`/multica`, `/workspaces`) must be `chown`ed to `multica:multica` before the `USER multica` instruction.
 - **Multi-arch** — all images are expected to build cleanly for both `linux/amd64` and `linux/arm64`. Test with `docker buildx bake --set *.platform=linux/amd64,linux/arm64` locally before opening a PR.
