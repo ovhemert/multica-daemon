@@ -38,7 +38,7 @@ RUN set -e; \
       codex)    npm install -g "@openai/codex@${CODEX_VERSION}" ;; \
       copilot)  npm install -g "@github/copilot@${COPILOT_VERSION}" ;; \
       gemini)   npm install -g "@google/gemini-cli@${GEMINI_VERSION}" ;; \
-      hermes)   curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash ;; \
+      hermes)   curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | UV_DATA_DIR=/usr/local/share/uv bash ;; \
       opencode) npm install -g "opencode-ai@${OPENCODE_VERSION}" ;; \
       pi)       npm install -g "@earendil-works/pi-coding-agent@${PI_VERSION}" ;; \
     esac; \
