@@ -31,14 +31,14 @@ Each image contains:
 
 - **Node.js 24** on a Debian Trixie slim base, needed by most CLIs distributed as npm packages.
 - **The Multica CLI / daemon**, installed from the official `install.sh`.
-- **AI coding agent CLIs**, with exact `*_VERSION` build args in [`Dockerfile`](../Dockerfile) where upstream packages support pinned installs:
+- **AI coding agent CLIs** with exact `*_VERSION` build args in [`Dockerfile`](../Dockerfile) where upstream packages support pinned installs:
   - `@anthropic-ai/claude-code` - Claude Code
   - `@openai/codex` - Codex
   - `@github/copilot` - GitHub Copilot CLI
   - `@google/gemini-cli` - Gemini
-  - `NousResearch/hermes-agent` - Hermes
   - `opencode-ai` - OpenCode
   - `@earendil-works/pi-coding-agent` - Pi
+- **Hermes** (`NousResearch/hermes-agent`), installed via its upstream script rather than an exact-version `*_VERSION` build arg.
 - **An entrypoint** ([`src/docker-entrypoint.sh`](../src/docker-entrypoint.sh)) that:
   1. Configures the daemon (`server_url`, `app_url`, `device_name`).
   2. Logs in with `MULTICA_TOKEN`.
