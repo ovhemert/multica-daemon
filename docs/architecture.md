@@ -31,13 +31,14 @@ Each image contains:
 
 - **Node.js 24** on a Debian Trixie slim base, needed by most CLIs distributed as npm packages.
 - **The Multica CLI / daemon**, installed from the official `install.sh`.
-- **Pinned versions of AI coding agent CLIs**, with exact `*_VERSION` build args in [`Dockerfile`](../Dockerfile):
+- **AI coding agent CLIs** with exact `*_VERSION` build args in [`Dockerfile`](../Dockerfile) where upstream packages support pinned installs:
   - `@anthropic-ai/claude-code` - Claude Code
   - `@openai/codex` - Codex
   - `@github/copilot` - GitHub Copilot CLI
   - `@google/gemini-cli` - Gemini
   - `opencode-ai` - OpenCode
   - `@earendil-works/pi-coding-agent` - Pi
+- **Hermes** (`NousResearch/hermes-agent`), installed via its upstream script rather than an exact-version `*_VERSION` build arg.
 - **An entrypoint** ([`src/docker-entrypoint.sh`](../src/docker-entrypoint.sh)) that:
   1. Configures the daemon (`server_url`, `app_url`, `device_name`).
   2. Logs in with `MULTICA_TOKEN`.
@@ -56,7 +57,7 @@ A single host can run any number of daemon containers simultaneously. Each conta
         |-- Total = N x M runtimes visible in the Multica UI
 ```
 
-Example: three containers on one server, each with the all-in-one image with 6 CLIs, connected to 1 workspace = **3 x 6 x 1 = 18 runtimes**.
+Example: three containers on one server, each with the all-in-one image with 7 CLIs, connected to 1 workspace = **3 x 7 x 1 = 21 runtimes**.
 
 Practical scaling guidelines:
 

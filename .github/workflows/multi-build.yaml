@@ -1,5 +1,5 @@
 # Builds per-variant multi-arch Docker images and pushes final tags directly.
-# Variants: claude, codex, copilot, gemini, opencode, pi, all
+# Variants: claude, codex, copilot, gemini, hermes, opencode, pi, all
 #
 # Tagging scheme
 # ──────────────
@@ -39,6 +39,7 @@ jobs:
           - codex
           - copilot
           - gemini
+          - hermes
           - opencode
           - pi
           - all
@@ -124,7 +125,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
           build-args: |
-            ENABLED_CLIS=${{ matrix.variant == 'all' && 'claude,codex,copilot,gemini,opencode,pi' || matrix.variant }}
+            ENABLED_CLIS=${{ matrix.variant == 'all' && 'claude,codex,copilot,gemini,hermes,opencode,pi' || matrix.variant }}
           cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/build-cache:${{ matrix.variant }}
           cache-to: type=registry,ref=ghcr.io/${{ github.repository }}/build-cache:${{ matrix.variant }},mode=max
 
@@ -180,7 +181,7 @@ jobs:
             echo "|---------|----------|-----------------|"
           } >> "$GITHUB_STEP_SUMMARY"
 
-          for variant in claude codex copilot gemini opencode pi all; do
+          for variant in claude codex copilot gemini hermes opencode pi all; do
             tag="${variant}"
             raw=$(docker buildx imagetools inspect "${IMAGE}:${tag}" --raw 2>/dev/null || true)
             if [ -z "$raw" ]; then

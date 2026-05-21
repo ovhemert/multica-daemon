@@ -71,6 +71,7 @@ Add those credentials to the agent configuration in Multica. Multica injects the
 | **Codex** | OpenAI API key | [platform.openai.com](https://platform.openai.com) -> API Keys | `OPENAI_API_KEY` |
 | **GitHub Copilot** | GitHub token with Copilot scope | GitHub -> Settings -> Developer settings -> Personal access tokens | `GITHUB_TOKEN` |
 | **Gemini** | Google AI Studio key | [aistudio.google.com](https://aistudio.google.com) -> Get API key | `GEMINI_API_KEY` |
+| **Hermes** | Provider-specific, such as Nous Portal, OpenRouter, OpenAI, or Anthropic | Same as the selected model provider | Provider's own env var |
 | **OpenCode** | Provider-specific, such as OpenAI or Anthropic | Same as the underlying provider | Provider's own env var |
 | **Pi** | Pi API key | Your Pi account settings | `PI_API_KEY` |
 

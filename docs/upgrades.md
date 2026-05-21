@@ -2,7 +2,7 @@
 
 ## Bumping A CLI Version
 
-Each CLI version is a build arg in `docker-bake.hcl`, such as `CLAUDE_VERSION` or `CODEX_VERSION`.
+Each versioned CLI package has a build arg in `docker-bake.hcl`, such as `CLAUDE_VERSION` or `CODEX_VERSION`. Hermes is installed from the upstream `NousResearch/hermes-agent` install script and does not currently have a pinned version arg.
 
 To upgrade:
 
@@ -39,5 +39,5 @@ The CI workflow triggers on tags matching `v*` and publishes multi-arch images t
 ## Breaking-Change Policy
 
 - **No breaking changes** to environment variable names or mount paths without a major version bump and a migration note in `CHANGELOG.md`.
-- **Pinned versions** mean existing image digests are immutable. You opt into upgrades by pulling a new tag.
+- **Pinned versions** and immutable image digests mean existing releases do not change. You opt into upgrades by pulling a new tag.
 - **Deprecation window** means if a variable or behavior is removed, it will be documented as deprecated in one release before being removed in the next.

@@ -37,7 +37,7 @@ variable "CLAUDE_VERSION"   { default = "2.1.144" }
 variable "CODEX_VERSION"    { default = "0.131.0" }
 variable "COPILOT_VERSION"  { default = "1.0.50" }
 variable "GEMINI_VERSION"   { default = "0.42.0" }
-variable "MULTICA_VERSION"  { default = "0.3.3" }
+variable "MULTICA_VERSION"  { default = "0.3.4" }
 variable "OPENCODE_VERSION" { default = "1.15.5" }
 variable "PI_VERSION"       { default = "0.75.3" }
 
