@@ -1,7 +1,7 @@
 REGISTRY ?= ghcr.io/ovhemert/multica-daemon
 export REGISTRY
 
-.PHONY: help build run logs shell push clean
+.PHONY: help build run logs shell clean
 .DEFAULT_GOAL := help
 
 help: ## Show this help
@@ -19,9 +19,6 @@ logs: ## Follow daemon logs (Ctrl-C to stop)
 
 shell: ## Open an interactive shell in the running daemon container
 	docker compose exec daemon /bin/bash
-
-push: ## Push all image variants to the registry (docker buildx bake --push)
-	docker buildx bake --push
 
 clean: ## Stop containers and remove volumes and orphaned services
 	docker compose down --volumes --remove-orphans

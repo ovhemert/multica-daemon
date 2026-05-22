@@ -14,16 +14,6 @@ export MULTICA_DAEMON_DEVICE_NAME="${MULTICA_DAEMON_ID}"
 multica config set server_url "${MULTICA_SERVER_URL}"
 multica config set app_url "${MULTICA_APP_URL}"
 
-# Configure git identity for commits produced by agent tasks.
-# Set GIT_AUTHOR_NAME and GIT_AUTHOR_EMAIL in the container environment
-# (via .env / --env-file / Docker secrets) to label commits meaningfully.
-if [ -n "${GIT_AUTHOR_NAME:-}" ]; then
-  git config --global user.name "${GIT_AUTHOR_NAME}"
-fi
-if [ -n "${GIT_AUTHOR_EMAIL:-}" ]; then
-  git config --global user.email "${GIT_AUTHOR_EMAIL}"
-fi
-
 # Login
 multica login --token "${MULTICA_TOKEN}"
 

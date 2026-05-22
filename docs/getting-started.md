@@ -45,7 +45,7 @@ docker compose down
 ## Plain Docker
 
 ```bash
-docker build -t multica-daemon:dev .
+docker build -f docker/Dockerfile -t multica-daemon:dev .
 
 docker run -d \
   --name multica-daemon \

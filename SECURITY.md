@@ -14,7 +14,7 @@ You will receive an acknowledgement within 48 hours. We aim to release a fix or 
 
 ## Scope
 
-This repository contains only the Dockerfile, entrypoint script, and CI configuration for packaging the Multica daemon alongside AI coding agent CLIs. The following categories are in scope:
+This repository contains only the Docker assets, entrypoint scripts, and CI configuration for packaging the Multica daemon alongside AI coding agent CLIs. The following categories are in scope:
 
 | Category | Examples |
 | --- | --- |
@@ -32,11 +32,11 @@ Vulnerabilities in the upstream Multica server, AI CLI tools, or GitHub Actions 
 - `MULTICA_TOKEN` is a **runtime installer token** used only at container startup (by `multica login`). It is passed as an environment variable and is not baked into the image.
 - AI CLI credentials (`ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`, `GITHUB_TOKEN`, etc.) are never stored in the image and should not be provided through `.env` files, Docker `-e` flags, `--env-file`, Docker secrets mounted into the container, or credentials directory mounts under `/multica`.
 - Add AI CLI credentials to the agent configuration in Multica. Multica injects those credentials into the specific agent process when it launches, keeping credentials scoped per agent instead of exposing them to the whole runtime container.
-- Do **not** hardcode any token in `docker-compose.yml`, the Dockerfile, or CI configuration. Use `.env` files only for daemon-level runtime settings such as `MULTICA_TOKEN`, URLs, daemon IDs, and git identity.
+- Do **not** hardcode any token in `docker-compose.yml`, `docker/Dockerfile`, or CI configuration. Use `.env` files only for daemon-level runtime settings such as `MULTICA_TOKEN`, URLs, daemon IDs, and git identity.
 
 ### Image supply chain
 
-- All CLI versions are pinned to exact semver tags in `docker-bake.hcl` and the Dockerfile `ARG` declarations.
+- All CLI versions are pinned to exact semver tags in the `docker/Dockerfile` `ARG` declarations.
 - Images are published to `ghcr.io/ovhemert/multica-daemon` from a GitHub Actions workflow triggered only by signed version tags on `main`.
 - Multi-arch builds run on GitHub-hosted runners (no self-hosted runners with persistent state).
 
