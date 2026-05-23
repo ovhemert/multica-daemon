@@ -1,13 +1,12 @@
-# Validates that all image variants build successfully on pull requests.
+# Validates that all per-agent image variants build successfully on pull requests.
 # Images are built for linux/amd64 and linux/arm64 but never pushed.
-name: PR build check (all variants)
+name: PR build check
 
 on:
   pull_request:
     branches:
       - main
     paths:
-      - 'docker/Dockerfile'
       - 'docker/Dockerfile.claude'
       - 'docker/Dockerfile.codex'
       - 'docker/Dockerfile.copilot'
@@ -44,7 +43,6 @@ jobs:
           - hermes
           - opencode
           - pi
-          - all
 
     runs-on: ubuntu-latest
 
@@ -73,7 +71,7 @@ jobs:
           DOCKER_BUILDKIT: 1
         with:
           context: .
-          file: ${{ matrix.variant == 'all' && 'docker/Dockerfile' || format('docker/Dockerfile.{0}', matrix.variant) }}
+          file: docker/Dockerfile.${{ matrix.variant }}
           platforms: linux/amd64,linux/arm64
           push: false
           build-args: |

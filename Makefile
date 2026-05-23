@@ -1,5 +1,8 @@
 REGISTRY ?= ghcr.io/ovhemert/multica-daemon
+COMPOSE_PROFILES ?= all
+SERVICE ?= daemon-claude
 export REGISTRY
+export COMPOSE_PROFILES
 
 .PHONY: help build run logs shell clean
 .DEFAULT_GOAL := help
@@ -15,10 +18,10 @@ run: ## Start the daemon container in the background
 	docker compose up -d
 
 logs: ## Follow daemon logs (Ctrl-C to stop)
-	docker compose logs -f daemon
+	docker compose logs -f
 
-shell: ## Open an interactive shell in the running daemon container
-	docker compose exec daemon /bin/bash
+shell: ## Open an interactive shell in SERVICE (default: daemon-claude)
+	docker compose exec $(SERVICE) /bin/bash
 
 clean: ## Stop containers and remove volumes and orphaned services
 	docker compose down --volumes --remove-orphans

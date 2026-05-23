@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project uses calendar-based version tags (`MULTICA_VERSION` of the bundled daemon CLI, e.g. `v0.3.4`).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project uses calendar-based version tags (`MULTICA_VERSION` of the bundled daemon CLI, e.g. `v0.3.0`).
 
 ## [Unreleased]
 
@@ -10,10 +10,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Claude now builds from a dedicated `docker/Dockerfile.claude` image variant.
 - Codex, Copilot, Gemini, OpenCode, and Pi now build from dedicated `docker/Dockerfile.<variant>` image variants.
 - Hermes now builds from the upstream `nousresearch/hermes-agent` base image in a dedicated `docker/Dockerfile.hermes` image variant.
-- The bundled `all` image now excludes Hermes and contains the Node-based CLI variants only.
+- CI now builds and publishes only dedicated per-agent image variants.
 
 ### Removed
 - Docker Buildx Bake configuration; CI now remains the source of truth for variant builds.
+- Bundled `all` / unqualified image builds; use the per-agent tags instead.
 
 ## [v0.3.4] — 2026-05-21
 
