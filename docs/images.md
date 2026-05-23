@@ -15,7 +15,7 @@
 
 All published images are **multi-arch** (`linux/amd64` + `linux/arm64`), built natively on matching GitHub-hosted runners. See [`.github/workflows/multi-build.yaml`](../.github/workflows/multi-build.yaml).
 
-Hermes is published only as the dedicated `hermes` variant. It is built from the upstream `nousresearch/hermes-agent` base image using [`docker/Dockerfile.hermes`](../docker/Dockerfile.hermes), then the Multica daemon is installed on top.
+Each per-agent image is published from a dedicated variant Dockerfile named `docker/Dockerfile.<variant>`. Hermes is built from the upstream `nousresearch/hermes-agent` base image using [`docker/Dockerfile.hermes`](../docker/Dockerfile.hermes), then the Multica daemon is installed on top.
 
 ## CLI Versions
 

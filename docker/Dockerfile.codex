@@ -1,0 +1,55 @@
+FROM node:24-trixie-slim AS base
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends ca-certificates curl git \
+  && rm -rf /var/lib/apt/lists/*
+
+
+
+FROM base AS production
+
+# OCI image labels
+ARG VERSION=latest
+LABEL org.opencontainers.image.title="multica-daemon-codex" \
+      org.opencontainers.image.description="Multica daemon runtime with Codex" \
+      org.opencontainers.image.source="https://github.com/ovhemert/multica-daemon" \
+      org.opencontainers.image.licenses="MIT" \
+      org.opencontainers.image.version="${VERSION}"
+
+# CLI versions
+ARG \
+  CODEX_VERSION=0.131.0 \
+  MULTICA_VERSION=0.3.4
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# Codex
+RUN npm install -g "@openai/codex@${CODEX_VERSION}"
+
+# Multica (daemon)
+RUN ARCH="$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')" \
+  && curl -fsSL -o /tmp/multica.tgz "https://github.com/multica-ai/multica/releases/download/v${MULTICA_VERSION}/multica-cli-${MULTICA_VERSION}-linux-${ARCH}.tar.gz" \
+  && tar -xzf /tmp/multica.tgz -C /usr/local/bin multica \
+  && rm -f /tmp/multica.tgz
+
+# Filesystem
+RUN mkdir -p /multica /workspaces
+COPY docker/docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+# Create non-root user so agents can run workspace operations safely
+# Global npm packages remain root-owned at /usr/local/lib/node_modules - intentional and safe for execution
+RUN useradd -m -s /bin/bash multica \
+  && chown -R multica:multica /multica /workspaces
+USER multica
+
+# Environment variables
+ENV \
+  HOME=/multica \
+  MULTICA_WORKSPACES_ROOT=/workspaces \
+  PATH=/usr/local/bin:/usr/bin:/bin \
+  SHELL=/bin/bash
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD multica daemon status
+
+ENTRYPOINT ["/docker-entrypoint.sh"]

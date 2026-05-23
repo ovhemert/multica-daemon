@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ## [Unreleased]
 
 ### Changed
+- Claude now builds from a dedicated `docker/Dockerfile.claude` image variant.
+- Codex, Copilot, Gemini, OpenCode, and Pi now build from dedicated `docker/Dockerfile.<variant>` image variants.
 - Hermes now builds from the upstream `nousresearch/hermes-agent` base image in a dedicated `docker/Dockerfile.hermes` image variant.
 - The bundled `all` image now excludes Hermes and contains the Node-based CLI variants only.
 

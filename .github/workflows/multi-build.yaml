@@ -14,7 +14,13 @@ on:
     #   - main
     # paths:
     #   - 'docker/Dockerfile'
+    #   - 'docker/Dockerfile.claude'
+    #   - 'docker/Dockerfile.codex'
+    #   - 'docker/Dockerfile.copilot'
+    #   - 'docker/Dockerfile.gemini'
     #   - 'docker/Dockerfile.hermes'
+    #   - 'docker/Dockerfile.opencode'
+    #   - 'docker/Dockerfile.pi'
     #   - 'docker/docker-entrypoint.sh'
     #   - 'docker/docker-entrypoint.hermes.sh'
     #   - '.github/workflows/multi-build.yaml'
@@ -123,14 +129,13 @@ jobs:
           DOCKER_BUILDKIT: 1
         with:
           context: .
-          file: ${{ matrix.variant == 'hermes' && 'docker/Dockerfile.hermes' || 'docker/Dockerfile' }}
+          file: ${{ matrix.variant == 'all' && 'docker/Dockerfile' || format('docker/Dockerfile.{0}', matrix.variant) }}
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
           build-args: |
-            ENABLED_CLIS=${{ matrix.variant == 'all' && 'claude,codex,copilot,gemini,opencode,pi' || matrix.variant }}
             HERMES_BASE_IMAGE=${{ env.HERMES_BASE_IMAGE }}
             HERMES_VERSION=${{ env.HERMES_VERSION }}
           cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/build-cache:${{ matrix.variant }}

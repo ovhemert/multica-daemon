@@ -7,7 +7,13 @@ on:
       - main
     paths:
       - 'docker/Dockerfile'
+      - 'docker/Dockerfile.claude'
+      - 'docker/Dockerfile.codex'
+      - 'docker/Dockerfile.copilot'
+      - 'docker/Dockerfile.gemini'
       - 'docker/Dockerfile.hermes'
+      - 'docker/Dockerfile.opencode'
+      - 'docker/Dockerfile.pi'
       - '.hadolint.yaml'
       - '.github/workflows/lint.yaml'
   push:
@@ -15,7 +21,13 @@ on:
       - main
     paths:
       - 'docker/Dockerfile'
+      - 'docker/Dockerfile.claude'
+      - 'docker/Dockerfile.codex'
+      - 'docker/Dockerfile.copilot'
+      - 'docker/Dockerfile.gemini'
       - 'docker/Dockerfile.hermes'
+      - 'docker/Dockerfile.opencode'
+      - 'docker/Dockerfile.pi'
       - '.hadolint.yaml'
       - '.github/workflows/lint.yaml'
 
@@ -35,7 +47,13 @@ jobs:
       matrix:
         dockerfile:
           - docker/Dockerfile
+          - docker/Dockerfile.claude
+          - docker/Dockerfile.codex
+          - docker/Dockerfile.copilot
+          - docker/Dockerfile.gemini
           - docker/Dockerfile.hermes
+          - docker/Dockerfile.opencode
+          - docker/Dockerfile.pi
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2

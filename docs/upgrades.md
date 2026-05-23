@@ -2,15 +2,15 @@
 
 ## Bumping A CLI Version
 
-Each versioned CLI package has a build arg in `docker/Dockerfile`, such as `CLAUDE_VERSION` or `CODEX_VERSION`. Hermes uses a separate base-image build with `HERMES_BASE_IMAGE` and `HERMES_VERSION`.
+Each versioned CLI package has a build arg in its dedicated variant Dockerfile, such as `CLAUDE_VERSION` in `docker/Dockerfile.claude` or `CODEX_VERSION` in `docker/Dockerfile.codex`. Hermes uses a separate base-image build with `HERMES_BASE_IMAGE` and `HERMES_VERSION`.
 
 To upgrade:
 
-1. Update the matching `ARG` default in `docker/Dockerfile` or `docker/Dockerfile.hermes`.
+1. Update the matching `ARG` default in the affected Dockerfile.
 2. Build and test locally:
 
    ```bash
-   docker build -f docker/Dockerfile --build-arg ENABLED_CLIS=claude -t ghcr.io/ovhemert/multica-daemon:claude .
+   docker build -f docker/Dockerfile.claude -t ghcr.io/ovhemert/multica-daemon:claude .
    docker run --rm --entrypoint claude ghcr.io/ovhemert/multica-daemon:claude --version
    ```
 
