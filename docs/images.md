@@ -4,17 +4,19 @@
 
 | Tag | Contents |
 | --- | --- |
-| `ghcr.io/ovhemert/multica-daemon:latest-claude` | Daemon + Claude Code only |
-| `ghcr.io/ovhemert/multica-daemon:latest-codex` | Daemon + Codex only |
-| `ghcr.io/ovhemert/multica-daemon:latest-copilot` | Daemon + Copilot only |
-| `ghcr.io/ovhemert/multica-daemon:latest-gemini` | Daemon + Gemini only |
-| `ghcr.io/ovhemert/multica-daemon:latest-hermes` | Daemon + Hermes only |
-| `ghcr.io/ovhemert/multica-daemon:latest-opencode` | Daemon + OpenCode only |
-| `ghcr.io/ovhemert/multica-daemon:latest-pi` | Daemon + Pi only |
+| `ghcr.io/ovhemert/multica-daemon:claude` | Daemon + Claude Code only |
+| `ghcr.io/ovhemert/multica-daemon:codex` | Daemon + Codex only |
+| `ghcr.io/ovhemert/multica-daemon:copilot` | Daemon + Copilot only |
+| `ghcr.io/ovhemert/multica-daemon:gemini` | Daemon + Gemini only |
+| `ghcr.io/ovhemert/multica-daemon:hermes` | Daemon + Hermes only |
+| `ghcr.io/ovhemert/multica-daemon:opencode` | Daemon + OpenCode only |
+| `ghcr.io/ovhemert/multica-daemon:pi` | Daemon + Pi only |
 
 All published images are **multi-arch** (`linux/amd64` + `linux/arm64`) and built by GitHub Actions with Docker Buildx. See [`.github/workflows/multi-build.yaml`](../.github/workflows/multi-build.yaml).
 
 Each per-agent image is published from a dedicated variant Dockerfile named `docker/Dockerfile.<variant>`. Hermes is built from the upstream `nousresearch/hermes-agent` base image using [`docker/Dockerfile.hermes`](../docker/Dockerfile.hermes), then the Multica daemon is installed on top.
+
+To target a specific version of the multica daemon for an agent, include the version as a tag in the image: `ghcr.io/ovhemert/multica-daemon:v<version>-hermes`
 
 ## CLI Versions
 
