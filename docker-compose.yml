@@ -20,8 +20,8 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.claude
       args:
-        CLAUDE_VERSION: "${CLAUDE_VERSION}"
-        MULTICA_VERSION: "${MULTICA_VERSION}"
+        CLAUDE_VERSION: "${CLAUDE_VERSION:-latest}"
+        MULTICA_VERSION: "${MULTICA_VERSION:-main}"
     environment:
       <<: *daemon-environment
       MULTICA_DAEMON_ID: dev-claude
@@ -37,8 +37,8 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.codex
       args:
-        CODEX_VERSION: "${CODEX_VERSION}"
-        MULTICA_VERSION: "${MULTICA_VERSION}"
+        CODEX_VERSION: "${CODEX_VERSION:-latest}"
+        MULTICA_VERSION: "${MULTICA_VERSION:-main}"
     environment:
       <<: *daemon-environment
       MULTICA_DAEMON_ID: dev-codex
@@ -54,8 +54,8 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.copilot
       args:
-        COPILOT_VERSION: "${COPILOT_VERSION}"
-        MULTICA_VERSION: "${MULTICA_VERSION}"
+        COPILOT_VERSION: "${COPILOT_VERSION:-latest}"
+        MULTICA_VERSION: "${MULTICA_VERSION:-main}"
     environment:
       <<: *daemon-environment
       MULTICA_DAEMON_ID: dev-copilot
@@ -71,8 +71,8 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.gemini
       args:
-        GEMINI_VERSION: "${GEMINI_VERSION}"
-        MULTICA_VERSION: "${MULTICA_VERSION}"
+        GEMINI_VERSION: "${GEMINI_VERSION:-latest}"
+        MULTICA_VERSION: "${MULTICA_VERSION:-main}"
     environment:
       <<: *daemon-environment
       MULTICA_DAEMON_ID: dev-gemini
@@ -102,8 +102,8 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.opencode
       args:
-        OPENCODE_VERSION: "${OPENCODE_VERSION}"
-        MULTICA_VERSION: "${MULTICA_VERSION}"
+        OPENCODE_VERSION: "${OPENCODE_VERSION:-latest}"
+        MULTICA_VERSION: "${MULTICA_VERSION:-main}"
     environment:
       <<: *daemon-environment
       MULTICA_DAEMON_ID: dev-opencode
@@ -119,8 +119,8 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.pi
       args:
-        PI_VERSION: "${PI_VERSION}"
-        MULTICA_VERSION: "${MULTICA_VERSION}"
+        PI_VERSION: "${PI_VERSION:-latest}"
+        MULTICA_VERSION: "${MULTICA_VERSION:-main}"
     environment:
       <<: *daemon-environment
       MULTICA_DAEMON_ID: dev-pi
