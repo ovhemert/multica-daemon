@@ -1,20 +1,130 @@
+x-daemon-environment: &daemon-environment
+  MULTICA_APP_URL: ${MULTICA_APP_URL:-http://localhost:3000}
+  MULTICA_SERVER_URL: ${MULTICA_SERVER_URL:-http://localhost:8080}
+  MULTICA_TOKEN: ${MULTICA_TOKEN}
+  GIT_AUTHOR_NAME: ${GIT_AUTHOR_NAME:-Multica Daemon}
+  GIT_AUTHOR_EMAIL: ${GIT_AUTHOR_EMAIL:-daemon@multica.ai}
+
+x-workspace-volumes: &workspace-volumes
+  - workspaces:/workspaces
+
 services:
 
-  daemon:
-    image: multica-daemon:dev
+  daemon-claude:
+    image: multica-daemon:dev-claude
+    restart: unless-stopped
+    profiles:
+      - all
+      - claude
     build:
       context: .
-      dockerfile: ./Dockerfile
-    restart: unless-stopped
+      dockerfile: ./docker/Dockerfile.claude
+      args:
+        CLAUDE_VERSION: "${CLAUDE_VERSION:-latest}"
+        MULTICA_VERSION: "${MULTICA_VERSION:-main}"
     environment:
-      - MULTICA_APP_URL=${MULTICA_APP_URL:-http://localhost:3000}
-      - MULTICA_SERVER_URL=${MULTICA_SERVER_URL:-http://localhost:8080}
-      - MULTICA_TOKEN=${MULTICA_TOKEN}
-      - MULTICA_DAEMON_ID=${MULTICA_DAEMON_ID:-}
-      - GIT_AUTHOR_NAME=${GIT_AUTHOR_NAME:-Multica Daemon}
-      - GIT_AUTHOR_EMAIL=${GIT_AUTHOR_EMAIL:-daemon@multica.ai}
-    volumes:
-      - workspaces:/workspaces
+      <<: *daemon-environment
+      MULTICA_DAEMON_ID: dev-claude
+    volumes: *workspace-volumes
+
+  daemon-codex:
+    image: multica-daemon:dev-codex
+    restart: unless-stopped
+    profiles:
+      - all
+      - codex
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.codex
+      args:
+        CODEX_VERSION: "${CODEX_VERSION:-latest}"
+        MULTICA_VERSION: "${MULTICA_VERSION:-main}"
+    environment:
+      <<: *daemon-environment
+      MULTICA_DAEMON_ID: dev-codex
+    volumes: *workspace-volumes
+
+  daemon-copilot:
+    image: multica-daemon:dev-copilot
+    restart: unless-stopped
+    profiles:
+      - all
+      - copilot
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.copilot
+      args:
+        COPILOT_VERSION: "${COPILOT_VERSION:-latest}"
+        MULTICA_VERSION: "${MULTICA_VERSION:-main}"
+    environment:
+      <<: *daemon-environment
+      MULTICA_DAEMON_ID: dev-copilot
+    volumes: *workspace-volumes
+
+  daemon-gemini:
+    image: multica-daemon:dev-gemini
+    restart: unless-stopped
+    profiles:
+      - all
+      - gemini
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.gemini
+      args:
+        GEMINI_VERSION: "${GEMINI_VERSION:-latest}"
+        MULTICA_VERSION: "${MULTICA_VERSION:-main}"
+    environment:
+      <<: *daemon-environment
+      MULTICA_DAEMON_ID: dev-gemini
+    volumes: *workspace-volumes
+
+  daemon-hermes:
+    image: multica-daemon:dev-hermes
+    restart: unless-stopped
+    profiles:
+      - all
+      - hermes
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.hermes
+    environment:
+      <<: *daemon-environment
+      MULTICA_DAEMON_ID: dev-hermes
+    volumes: *workspace-volumes
+
+  daemon-opencode:
+    image: multica-daemon:dev-opencode
+    restart: unless-stopped
+    profiles:
+      - all
+      - opencode
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.opencode
+      args:
+        OPENCODE_VERSION: "${OPENCODE_VERSION:-latest}"
+        MULTICA_VERSION: "${MULTICA_VERSION:-main}"
+    environment:
+      <<: *daemon-environment
+      MULTICA_DAEMON_ID: dev-opencode
+    volumes: *workspace-volumes
+
+  daemon-pi:
+    image: multica-daemon:dev-pi
+    restart: unless-stopped
+    profiles:
+      - all
+      - pi
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.pi
+      args:
+        PI_VERSION: "${PI_VERSION:-latest}"
+        MULTICA_VERSION: "${MULTICA_VERSION:-main}"
+    environment:
+      <<: *daemon-environment
+      MULTICA_DAEMON_ID: dev-pi
+    volumes: *workspace-volumes
 
 volumes:
   workspaces:

@@ -1,11 +1,10 @@
-# Builds per-variant multi-arch Docker images and pushes final tags directly.
-# Variants: claude, codex, copilot, gemini, hermes, opencode, pi, all
+# Builds per-agent multi-arch Docker images and pushes final tags directly.
+# Variants: claude, codex, copilot, gemini, hermes, opencode, pi
 #
 # Tagging scheme
 # ──────────────
 #  On semver tag   : :v1.2.3-<variant>  (per-variant)
-#                    :v1.2.3  :v1.2.3-all  :latest  (bundled 'all' image only)
-name: Build multi-arch Docker images (all variants)
+name: Build multi-arch Docker images
 
 on:
   workflow_dispatch:
@@ -13,14 +12,23 @@ on:
     # branches:
     #   - main
     # paths:
-    #   - 'Dockerfile'
-    #   - 'docker-bake.hcl'
+    #   - 'docker/Dockerfile.claude'
+    #   - 'docker/Dockerfile.codex'
+    #   - 'docker/Dockerfile.copilot'
+    #   - 'docker/Dockerfile.gemini'
+    #   - 'docker/Dockerfile.hermes'
+    #   - 'docker/Dockerfile.opencode'
+    #   - 'docker/Dockerfile.pi'
+    #   - 'docker/docker-entrypoint.sh'
+    #   - 'docker/docker-entrypoint.hermes.sh'
     #   - '.github/workflows/multi-build.yaml'
     tags:
       - 'v*'
 
 env:
   GHCR_IMAGE: ghcr.io/${{ github.repository }}
+  HERMES_BASE_IMAGE: nousresearch/hermes-agent
+  HERMES_VERSION: main
 
 permissions:
   contents: read
@@ -42,7 +50,6 @@ jobs:
           - hermes
           - opencode
           - pi
-          - all
 
     permissions:
       attestations: write
@@ -73,23 +80,17 @@ jobs:
         uses: docker/metadata-action@030e881283bb7a6894de51c315a6bfe6a94e05cf # v6.0.0
         with:
           images: ${{ env.GHCR_IMAGE }}
-          # Disable auto-latest so only the explicit type=raw,value=latest line
-          # (enabled only for the 'all' variant) controls the :latest tag.
-          # Without this, metadata-action adds :latest to every variant on a
-          # stable semver push, causing a race: whichever job finishes last wins.
+          # Disable auto-latest so semver tags publish only immutable
+          # per-variant release tags, never a shared :latest tag.
           flavor: |
             latest=false
           annotations: |
             type=org.opencontainers.image.description,value=${{ github.event.repository.description || 'No description provided' }}
           tags: |
-            # Per-variant tag on the main branch (all variants)
+            # Per-variant tag on the main branch
             type=raw,value=${{ matrix.variant }},enable=${{ github.ref_name == 'main' }}
-            # Semver tags for non-all variants: v1.2.3-claude, v1.2.3-codex, …
-            type=semver,pattern=v{{version}}-${{ matrix.variant }},enable=${{ matrix.variant != 'all' }}
-            # Semver tags and :latest for the bundled variant: v1.2.3 and v1.2.3-all
-            type=raw,value=latest,enable=${{ matrix.variant == 'all' }}
-            type=semver,pattern=v{{version}},enable=${{ matrix.variant == 'all' }}
-            type=semver,pattern=v{{version}}-all,enable=${{ matrix.variant == 'all' }}
+            # Semver tags for variants: v1.2.3-claude, v1.2.3-codex, …
+            type=semver,pattern=v{{version}}-${{ matrix.variant }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
@@ -119,13 +120,15 @@ jobs:
           DOCKER_BUILDKIT: 1
         with:
           context: .
+          file: docker/Dockerfile.${{ matrix.variant }}
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
           build-args: |
-            ENABLED_CLIS=${{ matrix.variant == 'all' && 'claude,codex,copilot,gemini,hermes,opencode,pi' || matrix.variant }}
+            HERMES_BASE_IMAGE=${{ env.HERMES_BASE_IMAGE }}
+            HERMES_VERSION=${{ env.HERMES_VERSION }}
           cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/build-cache:${{ matrix.variant }}
           cache-to: type=registry,ref=ghcr.io/${{ github.repository }}/build-cache:${{ matrix.variant }},mode=max
 
@@ -181,7 +184,7 @@ jobs:
             echo "|---------|----------|-----------------|"
           } >> "$GITHUB_STEP_SUMMARY"
 
-          for variant in claude codex copilot gemini hermes opencode pi all; do
+          for variant in claude codex copilot gemini hermes opencode pi; do
             tag="${variant}"
             raw=$(docker buildx imagetools inspect "${IMAGE}:${tag}" --raw 2>/dev/null || true)
             if [ -z "$raw" ]; then

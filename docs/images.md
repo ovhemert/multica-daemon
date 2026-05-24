@@ -4,22 +4,26 @@
 
 | Tag | Contents |
 | --- | --- |
-| `ghcr.io/ovhemert/multica-daemon:v0.3.4` | All bundled CLIs ("all-in-one") |
-| `ghcr.io/ovhemert/multica-daemon:v0.3.4-claude` | Daemon + Claude Code only |
-| `ghcr.io/ovhemert/multica-daemon:v0.3.4-codex` | Daemon + Codex only |
-| `ghcr.io/ovhemert/multica-daemon:v0.3.4-copilot` | Daemon + Copilot only |
-| `ghcr.io/ovhemert/multica-daemon:v0.3.4-gemini` | Daemon + Gemini only |
-| `ghcr.io/ovhemert/multica-daemon:v0.3.4-hermes` | Daemon + Hermes only |
-| `ghcr.io/ovhemert/multica-daemon:v0.3.4-opencode` | Daemon + OpenCode only |
-| `ghcr.io/ovhemert/multica-daemon:v0.3.4-pi` | Daemon + Pi only |
+| `ghcr.io/ovhemert/multica-daemon:claude` | Daemon + Claude Code only |
+| `ghcr.io/ovhemert/multica-daemon:codex` | Daemon + Codex only |
+| `ghcr.io/ovhemert/multica-daemon:copilot` | Daemon + Copilot only |
+| `ghcr.io/ovhemert/multica-daemon:gemini` | Daemon + Gemini only |
+| `ghcr.io/ovhemert/multica-daemon:hermes` | Daemon + Hermes only |
+| `ghcr.io/ovhemert/multica-daemon:opencode` | Daemon + OpenCode only |
+| `ghcr.io/ovhemert/multica-daemon:pi` | Daemon + Pi only |
 
-All published images are **multi-arch** (`linux/amd64` + `linux/arm64`), built natively on matching GitHub-hosted runners. See [`.github/workflows/multi-build.yaml`](../.github/workflows/multi-build.yaml).
+All published images are **multi-arch** (`linux/amd64` + `linux/arm64`) and built by GitHub Actions with Docker Buildx. See [`.github/workflows/multi-build.yaml`](../.github/workflows/multi-build.yaml).
+
+Each per-agent image is published from a dedicated variant Dockerfile named `docker/Dockerfile.<variant>`. Hermes is built from the upstream `nousresearch/hermes-agent` base image using [`docker/Dockerfile.hermes`](../docker/Dockerfile.hermes), then the Multica daemon is installed on top.
+
+To target a specific version of the multica daemon for an agent, include the version as a tag in the image: `ghcr.io/ovhemert/multica-daemon:v<version>-hermes`
 
 ## CLI Versions
 
-| Multica daemon version | Claude | Codex | Copilot | Gemini | Hermes | OpenCode | Pi |
+| Multica daemon version | Claude | Codex | Copilot | Gemini | Hermes base image | OpenCode | Pi |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `v0.3.4` | `2.1.144` | `0.131.0` | `1.0.50` | `0.42.0` | `0.14.0` | `1.15.5` | `0.75.3` |
-| `v0.3.3` | `2.1.144` | `0.131.0` | `1.0.50` | `0.42.0` | Not included | `1.15.5` | `0.75.3` |
-| `v0.3.2` | `2.1.143` | `0.130.0` | `1.0.48` | `0.42.0` | Not included | `1.15.4` | `0.75.3` |
+| `v0.3.5 (latest)` | `2.1.150` | `0.133.0` | `1.0.51` | `0.43.0` | `main` | `1.15.10` | `0.75.4` |
+| `v0.3.4` | `2.1.144` | `0.131.0` | `1.0.50` | `0.42.0` | `main` | `1.15.5` | `0.75.3` |
+| `v0.3.3` | `2.1.144` | `0.131.0` | `1.0.50` | `0.42.0` | - | `1.15.5` | `0.75.3` |
+| `v0.3.2` | `2.1.143` | `0.130.0` | `1.0.48` | `0.42.0` | - | `1.15.4` | `0.75.3` |
 

@@ -1,4 +1,4 @@
-# Runs hadolint on the Dockerfile on every PR and push to main.
+# Runs hadolint on Docker image definitions on every PR and push to main.
 name: Lint
 
 on:
@@ -6,14 +6,26 @@ on:
     branches:
       - main
     paths:
-      - 'Dockerfile'
+      - 'docker/Dockerfile.claude'
+      - 'docker/Dockerfile.codex'
+      - 'docker/Dockerfile.copilot'
+      - 'docker/Dockerfile.gemini'
+      - 'docker/Dockerfile.hermes'
+      - 'docker/Dockerfile.opencode'
+      - 'docker/Dockerfile.pi'
       - '.hadolint.yaml'
       - '.github/workflows/lint.yaml'
   push:
     branches:
       - main
     paths:
-      - 'Dockerfile'
+      - 'docker/Dockerfile.claude'
+      - 'docker/Dockerfile.codex'
+      - 'docker/Dockerfile.copilot'
+      - 'docker/Dockerfile.gemini'
+      - 'docker/Dockerfile.hermes'
+      - 'docker/Dockerfile.opencode'
+      - 'docker/Dockerfile.pi'
       - '.hadolint.yaml'
       - '.github/workflows/lint.yaml'
 
@@ -26,8 +38,19 @@ concurrency:
 
 jobs:
   hadolint:
-    name: Lint Dockerfile
+    name: Lint ${{ matrix.dockerfile }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dockerfile:
+          - docker/Dockerfile.claude
+          - docker/Dockerfile.codex
+          - docker/Dockerfile.copilot
+          - docker/Dockerfile.gemini
+          - docker/Dockerfile.hermes
+          - docker/Dockerfile.opencode
+          - docker/Dockerfile.pi
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -35,5 +58,5 @@ jobs:
       - name: Run hadolint
         uses: hadolint/hadolint-action@v3.1.0
         with:
-          dockerfile: Dockerfile
+          dockerfile: ${{ matrix.dockerfile }}
           config: .hadolint.yaml

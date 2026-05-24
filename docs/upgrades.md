@@ -2,16 +2,23 @@
 
 ## Bumping A CLI Version
 
-Each versioned CLI package has a build arg in `docker-bake.hcl`, such as `CLAUDE_VERSION` or `CODEX_VERSION`. Hermes is installed from the upstream `NousResearch/hermes-agent` install script and does not currently have a pinned version arg.
+Each versioned CLI package has a build arg in its dedicated variant Dockerfile, such as `CLAUDE_VERSION` in `docker/Dockerfile.claude` or `CODEX_VERSION` in `docker/Dockerfile.codex`. Hermes uses a separate base-image build with `HERMES_BASE_IMAGE` and `HERMES_VERSION`.
 
 To upgrade:
 
-1. Update the version variable in `docker-bake.hcl` and the matching `ARG` default in `Dockerfile`.
+1. Update the matching `ARG` default in the affected Dockerfile.
 2. Build and test locally:
 
    ```bash
-   docker buildx bake claude --load
-   docker run --rm ghcr.io/ovhemert/multica-daemon:claude claude --version
+   docker build -f docker/Dockerfile.claude -t ghcr.io/ovhemert/multica-daemon:claude .
+   docker run --rm --entrypoint claude ghcr.io/ovhemert/multica-daemon:claude --version
+   ```
+
+For Hermes, use the dedicated target:
+
+   ```bash
+   docker build -f docker/Dockerfile.hermes --build-arg HERMES_VERSION=main -t ghcr.io/ovhemert/multica-daemon:hermes .
+   docker run --rm --entrypoint hermes ghcr.io/ovhemert/multica-daemon:hermes --version
    ```
 
 3. Open a PR, merge to `main`, and tag a new release.

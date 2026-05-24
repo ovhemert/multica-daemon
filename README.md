@@ -1,10 +1,10 @@
 # Multica Daemon - Containerized Runtimes
 
-This repository builds Docker images that bundle the [Multica](https://multica.ai) daemon with one or more AI coding agent CLIs, including Claude Code, Codex, Copilot, Gemini, Hermes, OpenCode, and Pi.
+This repository builds Docker images that bundle the [Multica](https://multica.ai) daemon with dedicated AI coding agent CLIs, including Claude Code, Codex, Copilot, Gemini, Hermes, OpenCode, and Pi.
 
 Its main purpose is to make [Multica runtimes](https://multica.ai/docs/daemon-runtimes) reproducible, isolated, and horizontally scalable. Instead of installing every AI coding CLI on every developer machine, you can run these images anywhere Docker runs: locally with Docker Compose, on a server, or on Kubernetes.
 
-In Multica, a runtime is the combination of one daemon and one AI coding tool. This repo packages that combination into container images so each daemon container can register multiple available runtimes with the Multica server.
+In Multica, a runtime is the combination of one daemon and one AI coding tool. This repo packages that combination into per-agent container images so each daemon container registers the runtime for its installed CLI with the Multica server.
 
 ## Documentation
 

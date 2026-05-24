@@ -5,17 +5,19 @@
 The Runtimes page shows the daemon as offline or missing.
 
 ```bash
+SERVICE=daemon-claude
+
 # 1. Check the daemon process is running
-docker compose exec daemon multica daemon status
+docker compose exec "$SERVICE" multica daemon status
 
 # 2. Tail live logs for error messages
-docker compose exec daemon multica daemon logs -f
+docker compose exec "$SERVICE" multica daemon logs -f
 
 # 3. Verify the container is healthy
-docker inspect --format '{{.State.Health.Status}}' $(docker compose ps -q daemon)
+docker inspect --format '{{.State.Health.Status}}' "$(docker compose ps -q "$SERVICE")"
 
 # 4. If the container exited, read the last run's output
-docker compose logs daemon --tail 100
+docker compose logs "$SERVICE" --tail 100
 ```
 
 Common causes:
@@ -29,12 +31,14 @@ Common causes:
 A CLI is installed in the image but no runtime row appears for it in the Multica UI.
 
 ```bash
+SERVICE=daemon-claude
+
 # Confirm the CLI binary exists and is executable
-docker compose exec daemon which claude
-docker compose exec daemon claude --version
+docker compose exec "$SERVICE" which claude
+docker compose exec "$SERVICE" claude --version
 
 # Check the daemon detected it on startup
-docker compose exec daemon multica daemon logs | grep -i "claude\|detected\|registered"
+docker compose exec "$SERVICE" multica daemon logs | grep -i "claude\|detected\|registered"
 ```
 
 Common causes:
@@ -49,7 +53,7 @@ The daemon starts but tasks fail immediately with authentication errors.
 ```bash
 # Confirm the agent credential names configured in Multica match the CLI.
 # Multica injects these values into the agent process when a task launches.
-docker compose exec daemon multica daemon logs -f
+docker compose exec daemon-claude multica daemon logs -f
 ```
 
 Common causes:
@@ -64,14 +68,16 @@ Common causes:
 A task has been assigned but stays in queued and never starts.
 
 ```bash
+SERVICE=daemon-claude
+
 # Check how many tasks are currently running on this daemon
-docker compose exec daemon multica daemon status
+docker compose exec "$SERVICE" multica daemon status
 
 # Check the MULTICA_DAEMON_MAX_CONCURRENT_TASKS setting
-docker compose exec daemon env | grep MULTICA_DAEMON_MAX_CONCURRENT_TASKS
+docker compose exec "$SERVICE" env | grep MULTICA_DAEMON_MAX_CONCURRENT_TASKS
 
 # Look for task acceptance/rejection in the logs
-docker compose exec daemon multica daemon logs | grep -i "task\|queue\|accept\|reject"
+docker compose exec "$SERVICE" multica daemon logs | grep -i "task\|queue\|accept\|reject"
 ```
 
 Common causes:

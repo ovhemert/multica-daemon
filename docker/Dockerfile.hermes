@@ -1,0 +1,43 @@
+ARG HERMES_BASE_IMAGE=nousresearch/hermes-agent
+ARG HERMES_VERSION=main
+FROM ${HERMES_BASE_IMAGE}:${HERMES_VERSION}
+
+# OCI image labels
+ARG VERSION=latest
+LABEL org.opencontainers.image.title="multica-daemon-hermes" \
+      org.opencontainers.image.description="Multica daemon runtime with Hermes Agent" \
+      org.opencontainers.image.source="https://github.com/ovhemert/multica-daemon" \
+      org.opencontainers.image.licenses="MIT" \
+      org.opencontainers.image.version="${VERSION}"
+
+# Multica daemon version
+ARG MULTICA_VERSION=0.3.5
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# Multica (daemon)
+RUN ARCH="$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')" \
+  && curl -fsSL -o /tmp/multica.tgz "https://github.com/multica-ai/multica/releases/download/v${MULTICA_VERSION}/multica-cli-${MULTICA_VERSION}-linux-${ARCH}.tar.gz" \
+  && tar -xzf /tmp/multica.tgz -C /usr/local/bin multica \
+  && rm -f /tmp/multica.tgz
+
+# Filesystem
+RUN mkdir -p /opt/data /workspaces
+COPY docker/docker-entrypoint.sh /docker-entrypoint.sh
+COPY docker/docker-entrypoint.hermes.sh /docker-entrypoint.hermes.sh
+RUN chmod +x /docker-entrypoint.sh /docker-entrypoint.hermes.sh \
+  && chown -R hermes:hermes /opt/data /workspaces
+
+# Environment variables
+ENV \
+  HOME=/opt/data \
+  HERMES_HOME=/opt/data \
+  MULTICA_WORKSPACES_ROOT=/workspaces \
+  PATH=/opt/hermes/.venv/bin:/opt/data/.local/bin:/usr/local/bin:/usr/bin:/bin \
+  SHELL=/bin/bash \
+  VIRTUAL_ENV=/opt/hermes/.venv
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD multica daemon status
+
+ENTRYPOINT ["/usr/bin/tini", "-g", "--", "/docker-entrypoint.hermes.sh"]

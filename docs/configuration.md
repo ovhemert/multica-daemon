@@ -21,7 +21,7 @@
 
 When `MULTICA_DAEMON_ID` is not set, the entrypoint falls back to `$HOSTNAME`, which Docker sets to the short container ID. That is unique by default.
 
-Set `MULTICA_DAEMON_ID` explicitly when you want a stable, human-readable name on the Runtimes page, such as `daemon-prod-01`. If you scale out with `docker compose up --scale daemon=N`, omit `MULTICA_DAEMON_ID` from your `.env` and let each replica get a distinct ID from its hostname.
+Set `MULTICA_DAEMON_ID` explicitly when you want a stable, human-readable name on the Runtimes page, such as `daemon-prod-01`. The included `docker-compose.yml` assigns distinct IDs per service (`dev-claude`, `dev-codex`, and so on). If you scale a service with `docker compose up --scale daemon-claude=N`, remove that service-level `MULTICA_DAEMON_ID` override first and let each replica get a distinct ID from its hostname.
 
 ## Secret Management
 
@@ -43,7 +43,7 @@ Keep the secrets file outside the repo and out of version control.
 
 ```yaml
 services:
-  daemon:
+  daemon-claude:
     secrets:
       - multica_token
 secrets:
@@ -56,7 +56,7 @@ Secrets are mounted as files under `/run/secrets/` inside the container. The ent
 **SOPS + age (recommended for teams)**
 
 1. Encrypt your secrets file: `sops --encrypt --age <recipient> .env > .env.enc`
-2. Decrypt at deploy time: `sops --decrypt .env.enc > .env && docker compose up -d`
+2. Decrypt at deploy time: `sops --decrypt .env.enc > .env && docker compose --profile all up -d`
 3. Commit only `.env.enc` to version control; never commit the plaintext `.env`.
 
 ## Per-Agent CLI Credentials
