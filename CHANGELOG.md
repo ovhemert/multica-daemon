@@ -6,11 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [v0.3.5] — 2026-05-23
+
 ### Changed
 - Claude now builds from a dedicated `docker/Dockerfile.claude` image variant.
 - Codex, Copilot, Gemini, OpenCode, and Pi now build from dedicated `docker/Dockerfile.<variant>` image variants.
 - Hermes now builds from the upstream `nousresearch/hermes-agent` base image in a dedicated `docker/Dockerfile.hermes` image variant.
 - CI now builds and publishes only dedicated per-agent image variants.
+- Multica daemon CLI updated to `0.3.5`.
+- CLI pins updated: Claude `2.1.150`, Codex `0.133.0`, Copilot `1.0.51`, Gemini `0.43.0`, OpenCode `1.15.10`, and Pi `0.75.4`.
 
 ### Removed
 - Docker Buildx Bake configuration; CI now remains the source of truth for variant builds.
@@ -54,7 +58,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `HEALTHCHECK` using `multica daemon status`.
 - MIT license.
 
-[Unreleased]: https://github.com/ovhemert/multica-daemon/compare/v0.3.4...HEAD
+[Unreleased]: https://github.com/ovhemert/multica-daemon/compare/v0.3.5...HEAD
+[v0.3.5]: https://github.com/ovhemert/multica-daemon/compare/v0.3.4...v0.3.5
 [v0.3.4]: https://github.com/ovhemert/multica-daemon/compare/v0.3.3...v0.3.4
 [v0.3.3]: https://github.com/ovhemert/multica-daemon/compare/v0.3.2...v0.3.3
 [v0.3.2]: https://github.com/ovhemert/multica-daemon/compare/v0.3.0...v0.3.2

@@ -17,8 +17,8 @@ LABEL org.opencontainers.image.title="multica-daemon-claude" \
 
 # CLI versions
 ARG \
-  CLAUDE_VERSION=2.1.144 \
-  MULTICA_VERSION=0.3.4
+  CLAUDE_VERSION=2.1.150 \
+  MULTICA_VERSION=0.3.5
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
