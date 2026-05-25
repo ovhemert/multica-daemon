@@ -16,7 +16,7 @@ All published images are **multi-arch** (`linux/amd64` + `linux/arm64`) and buil
 
 Each per-agent image is published from a dedicated variant Dockerfile named `docker/Dockerfile.<variant>`. Hermes is built from the upstream `nousresearch/hermes-agent` base image using [`docker/Dockerfile.hermes`](../docker/Dockerfile.hermes), then the Multica daemon is installed on top.
 
-To target a specific version of the multica daemon for an agent, include the version as a tag in the image: `ghcr.io/ovhemert/multica-daemon:v<version>-<variant>` (for example `ghcr.io/ovhemert/multica-daemon:v0.3.6-hermes`). The latest release for each variant is also tagged as `latest-<variant>`, for example `ghcr.io/ovhemert/multica-daemon:latest-hermes`.
+To target a specific version of the multica daemon for an agent, include the version as a tag in the image: `ghcr.io/ovhemert/multica-daemon:v<version>-<variant>` (for example `ghcr.io/ovhemert/multica-daemon:v0.3.6-hermes`). The latest release for each variant is also tagged as `latest-<variant>`, for example `ghcr.io/ovhemert/multica-daemon:latest-hermes`. Unversioned `:<variant>` tags track `main` and are intended for development/testing.
 
 ## CLI Versions
 
