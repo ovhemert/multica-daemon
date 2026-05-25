@@ -16,8 +16,6 @@ if [ "$(id -u)" = "0" ]; then
 
   chown -R hermes:hermes "${HERMES_HOME}" /workspaces 2>/dev/null || true
   chown -R hermes:hermes "${HERMES_INSTALL_DIR}/.venv" 2>/dev/null || true
-
-  exec gosu hermes "$0" "$@"
 fi
 
 export HERMES_HOME

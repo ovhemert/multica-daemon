@@ -11,7 +11,7 @@ LABEL org.opencontainers.image.title="multica-daemon-hermes" \
       org.opencontainers.image.version="${VERSION}"
 
 # Multica daemon version
-ARG MULTICA_VERSION=0.3.5
+ARG MULTICA_VERSION=0.3.6
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -40,4 +40,4 @@ ENV \
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
   CMD multica daemon status
 
-ENTRYPOINT ["/usr/bin/tini", "-g", "--", "/docker-entrypoint.hermes.sh"]
+ENTRYPOINT ["/docker-entrypoint.hermes.sh"]
