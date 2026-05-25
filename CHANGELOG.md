@@ -11,7 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Changed
 - Multica daemon CLI updated to `0.3.6`.
 - CLI pins updated: Copilot `1.0.54` and Pi `0.75.5`.
-- Hermes base image pinned to `nousresearch/hermes-agent:main` (Hermes Agent `v0.14.0`) instead of the moving `main` tag.
+- Hermes base image updated to `nousresearch/hermes-agent:main` (Hermes Agent `v0.14.0` at release time).
 
 ## [v0.3.5] — 2026-05-23
 
