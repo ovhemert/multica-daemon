@@ -18,6 +18,10 @@ Each per-agent image is published from a dedicated variant Dockerfile named `doc
 
 To target a specific version of the multica daemon for an agent, include the version as a tag in the image: `ghcr.io/ovhemert/multica-daemon:v<version>-<variant>` (for example `ghcr.io/ovhemert/multica-daemon:v0.3.6-hermes`). The latest release for each variant is also tagged as `latest-<variant>`, for example `ghcr.io/ovhemert/multica-daemon:latest-hermes`. Unversioned `:<variant>` tags track `main` and are intended for development/testing.
 
+## Registry Cleanup
+
+Untagged GHCR image versions and orphaned referrer artifacts are removed by [`.github/workflows/ghcr-cleanup.yaml`](../.github/workflows/ghcr-cleanup.yaml). The cleanup runs after successful publish workflows, on a weekly schedule, and on manual dispatch. Tagged release images such as `v0.3.6-hermes` and moving tags such as `latest-hermes` are preserved.
+
 ## CLI Versions
 
 | Multica daemon version | Claude | Codex | Copilot | Gemini | Hermes base image | OpenCode | Pi |
