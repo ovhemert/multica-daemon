@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+- GHCR cleanup workflow for untagged image versions and orphaned referrer artifacts.
+
+## [v0.3.6] — 2026-05-25
+
+### Changed
+- Multica daemon CLI updated to `0.3.6`.
+- CLI pins updated: Copilot `1.0.54` and Pi `0.75.5`.
+- Hermes base image updated to `nousresearch/hermes-agent:main` (Hermes Agent `v0.14.0` at release time).
+
 ## [v0.3.5] — 2026-05-23
 
 ### Changed
@@ -58,7 +68,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `HEALTHCHECK` using `multica daemon status`.
 - MIT license.
 
-[Unreleased]: https://github.com/ovhemert/multica-daemon/compare/v0.3.5...HEAD
+[Unreleased]: https://github.com/ovhemert/multica-daemon/compare/v0.3.6...HEAD
+[v0.3.6]: https://github.com/ovhemert/multica-daemon/compare/v0.3.5...v0.3.6
 [v0.3.5]: https://github.com/ovhemert/multica-daemon/compare/v0.3.4...v0.3.5
 [v0.3.4]: https://github.com/ovhemert/multica-daemon/compare/v0.3.3...v0.3.4
 [v0.3.3]: https://github.com/ovhemert/multica-daemon/compare/v0.3.2...v0.3.3

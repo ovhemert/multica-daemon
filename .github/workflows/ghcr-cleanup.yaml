@@ -1,0 +1,37 @@
+# Removes stale GitHub Container Registry versions that are left behind by
+# multi-architecture image builds and attestations.
+name: Cleanup GHCR images
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Run weekly to keep the action's manifest cache warm and remove stale
+    # untagged versions before they accumulate.
+    - cron: '20 3 * * 1'
+  workflow_run:
+    workflows:
+      - Build multi-arch Docker images
+    types:
+      - completed
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    name: Cleanup GHCR package
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Delete stale GHCR versions
+        uses: dataaxiom/ghcr-cleanup-action@v1.2.0
+        with:
+          delete-untagged: true
+          delete-orphaned-images: true
+          validate: true

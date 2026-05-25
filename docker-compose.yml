@@ -20,8 +20,8 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.claude
       args:
-        CLAUDE_VERSION: "${CLAUDE_VERSION:-latest}"
-        MULTICA_VERSION: "${MULTICA_VERSION:-main}"
+        CLAUDE_VERSION: "${CLAUDE_VERSION:-2.1.150}"
+        MULTICA_VERSION: "${MULTICA_VERSION:-0.3.6}"
     environment:
       <<: *daemon-environment
       MULTICA_DAEMON_ID: dev-claude
@@ -37,8 +37,8 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.codex
       args:
-        CODEX_VERSION: "${CODEX_VERSION:-latest}"
-        MULTICA_VERSION: "${MULTICA_VERSION:-main}"
+        CODEX_VERSION: "${CODEX_VERSION:-0.133.0}"
+        MULTICA_VERSION: "${MULTICA_VERSION:-0.3.6}"
     environment:
       <<: *daemon-environment
       MULTICA_DAEMON_ID: dev-codex
@@ -54,8 +54,8 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.copilot
       args:
-        COPILOT_VERSION: "${COPILOT_VERSION:-latest}"
-        MULTICA_VERSION: "${MULTICA_VERSION:-main}"
+        COPILOT_VERSION: "${COPILOT_VERSION:-1.0.54}"
+        MULTICA_VERSION: "${MULTICA_VERSION:-0.3.6}"
     environment:
       <<: *daemon-environment
       MULTICA_DAEMON_ID: dev-copilot
@@ -71,8 +71,8 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.gemini
       args:
-        GEMINI_VERSION: "${GEMINI_VERSION:-latest}"
-        MULTICA_VERSION: "${MULTICA_VERSION:-main}"
+        GEMINI_VERSION: "${GEMINI_VERSION:-0.43.0}"
+        MULTICA_VERSION: "${MULTICA_VERSION:-0.3.6}"
     environment:
       <<: *daemon-environment
       MULTICA_DAEMON_ID: dev-gemini
@@ -102,8 +102,8 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.opencode
       args:
-        OPENCODE_VERSION: "${OPENCODE_VERSION:-latest}"
-        MULTICA_VERSION: "${MULTICA_VERSION:-main}"
+        OPENCODE_VERSION: "${OPENCODE_VERSION:-1.15.10}"
+        MULTICA_VERSION: "${MULTICA_VERSION:-0.3.6}"
     environment:
       <<: *daemon-environment
       MULTICA_DAEMON_ID: dev-opencode
@@ -119,8 +119,8 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.pi
       args:
-        PI_VERSION: "${PI_VERSION:-latest}"
-        MULTICA_VERSION: "${MULTICA_VERSION:-main}"
+        PI_VERSION: "${PI_VERSION:-0.75.5}"
+        MULTICA_VERSION: "${MULTICA_VERSION:-0.3.6}"
     environment:
       <<: *daemon-environment
       MULTICA_DAEMON_ID: dev-pi
