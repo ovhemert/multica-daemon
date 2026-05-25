@@ -187,12 +187,14 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
           for variant in claude codex copilot gemini hermes opencode pi; do
+            tag="${variant}"
             if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
               tag="latest-${variant}"
-            else
-              tag="${variant}"
             fi
             raw=$(docker buildx imagetools inspect "${IMAGE}:${tag}" --raw 2>/dev/null || true)
+            if [ -z "$raw" ] && [ "$tag" != "$variant" ]; then
+              raw=$(docker buildx imagetools inspect "${IMAGE}:${variant}" --raw 2>/dev/null || true)
+            fi
             if [ -z "$raw" ]; then
               echo "| ${variant} | — | not available |" >> "$GITHUB_STEP_SUMMARY"
               continue
