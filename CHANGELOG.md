@@ -6,8 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [v0.3.8] — 2026-05-26
+
 ### Added
 - GHCR cleanup workflow for untagged image versions and orphaned referrer artifacts.
+
+### Changed
+- Multica daemon CLI updated to `0.3.8`.
 
 ## [v0.3.6] — 2026-05-25
 
@@ -68,7 +73,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `HEALTHCHECK` using `multica daemon status`.
 - MIT license.
 
-[Unreleased]: https://github.com/ovhemert/multica-daemon/compare/v0.3.6...HEAD
+[Unreleased]: https://github.com/ovhemert/multica-daemon/compare/v0.3.8...HEAD
+[v0.3.8]: https://github.com/ovhemert/multica-daemon/compare/v0.3.6...v0.3.8
 [v0.3.6]: https://github.com/ovhemert/multica-daemon/compare/v0.3.5...v0.3.6
 [v0.3.5]: https://github.com/ovhemert/multica-daemon/compare/v0.3.4...v0.3.5
 [v0.3.4]: https://github.com/ovhemert/multica-daemon/compare/v0.3.3...v0.3.4

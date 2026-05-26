@@ -18,7 +18,7 @@ LABEL org.opencontainers.image.title="multica-daemon-pi" \
 # CLI versions
 ARG \
   PI_VERSION=0.75.5 \
-  MULTICA_VERSION=0.3.6
+  MULTICA_VERSION=0.3.8
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 

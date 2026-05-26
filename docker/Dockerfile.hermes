@@ -11,7 +11,7 @@ LABEL org.opencontainers.image.title="multica-daemon-hermes" \
       org.opencontainers.image.version="${VERSION}"
 
 # Multica daemon version
-ARG MULTICA_VERSION=0.3.6
+ARG MULTICA_VERSION=0.3.8
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
