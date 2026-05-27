@@ -16,17 +16,17 @@ LABEL org.opencontainers.image.title="multica-daemon-pi" \
       org.opencontainers.image.version="${VERSION}"
 
 # CLI versions
-ARG \
-  PI_VERSION=0.75.5 \
-  MULTICA_VERSION=0.3.8
+COPY versions.env /usr/local/share/multica-daemon/versions.env
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Pi Coding Agent
-RUN npm install -g "@earendil-works/pi-coding-agent@${PI_VERSION}"
+RUN . /usr/local/share/multica-daemon/versions.env \
+  && npm install -g "@earendil-works/pi-coding-agent@${PI_VERSION:?}"
 
 # Multica (daemon)
-RUN ARCH="$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')" \
+RUN . /usr/local/share/multica-daemon/versions.env \
+  && ARCH="$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')" \
   && curl -fsSL -o /tmp/multica.tgz "https://github.com/multica-ai/multica/releases/download/v${MULTICA_VERSION}/multica-cli-${MULTICA_VERSION}-linux-${ARCH}.tar.gz" \
   && tar -xzf /tmp/multica.tgz -C /usr/local/bin multica \
   && rm -f /tmp/multica.tgz

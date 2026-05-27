@@ -20,15 +20,13 @@ on:
     #   - 'docker/Dockerfile.opencode'
     #   - 'docker/Dockerfile.pi'
     #   - 'docker/docker-entrypoint.sh'
-    #   - 'docker/docker-entrypoint.hermes.sh'
+    #   - 'versions.env'
     #   - '.github/workflows/multi-build.yaml'
     tags:
       - 'v*'
 
 env:
   GHCR_IMAGE: ghcr.io/${{ github.repository }}
-  HERMES_BASE_IMAGE: nousresearch/hermes-agent
-  HERMES_VERSION: main
 
 permissions:
   contents: read
@@ -128,9 +126,6 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
-          build-args: |
-            HERMES_BASE_IMAGE=${{ env.HERMES_BASE_IMAGE }}
-            HERMES_VERSION=${{ env.HERMES_VERSION }}
           cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/build-cache:${{ matrix.variant }}
           cache-to: type=registry,ref=ghcr.io/${{ github.repository }}/build-cache:${{ matrix.variant }},mode=max
 

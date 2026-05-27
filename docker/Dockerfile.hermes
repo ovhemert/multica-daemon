@@ -1,6 +1,11 @@
-ARG HERMES_BASE_IMAGE=nousresearch/hermes-agent
-ARG HERMES_VERSION=main
-FROM ${HERMES_BASE_IMAGE}:${HERMES_VERSION}
+FROM node:24-trixie-slim AS base
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends ca-certificates curl ffmpeg git openssh-client python3 python3-venv ripgrep xz-utils \
+  && rm -rf /var/lib/apt/lists/*
+
+
+
+FROM base AS production
 
 # OCI image labels
 ARG VERSION=latest
@@ -10,34 +15,45 @@ LABEL org.opencontainers.image.title="multica-daemon-hermes" \
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.version="${VERSION}"
 
-# Multica daemon version
-ARG MULTICA_VERSION=0.3.8
+# CLI versions
+COPY versions.env /usr/local/share/multica-daemon/versions.env
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+# Hermes Agent
+RUN . /usr/local/share/multica-daemon/versions.env \
+  && python3 -m venv /opt/hermes/.venv \
+  && /opt/hermes/.venv/bin/pip install --no-cache-dir --upgrade pip \
+  && /opt/hermes/.venv/bin/pip install --no-cache-dir "hermes-agent[acp]==${HERMES_VERSION:?}"
+
 # Multica (daemon)
-RUN ARCH="$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')" \
+RUN . /usr/local/share/multica-daemon/versions.env \
+  && ARCH="$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')" \
   && curl -fsSL -o /tmp/multica.tgz "https://github.com/multica-ai/multica/releases/download/v${MULTICA_VERSION}/multica-cli-${MULTICA_VERSION}-linux-${ARCH}.tar.gz" \
   && tar -xzf /tmp/multica.tgz -C /usr/local/bin multica \
   && rm -f /tmp/multica.tgz
 
 # Filesystem
-RUN mkdir -p /opt/data /workspaces
+RUN mkdir -p /multica /workspaces /opt/hermes /opt/data
 COPY docker/docker-entrypoint.sh /docker-entrypoint.sh
-COPY docker/docker-entrypoint.hermes.sh /docker-entrypoint.hermes.sh
-RUN chmod +x /docker-entrypoint.sh /docker-entrypoint.hermes.sh \
-  && chown -R hermes:hermes /opt/data /workspaces
+COPY docker/docker-entrypoint-hermes.sh /docker-entrypoint-hermes.sh
+RUN chmod +x /docker-entrypoint.sh /docker-entrypoint-hermes.sh
+
+# Create non-root user so agents can run workspace operations safely
+# Global Python packages remain under /opt/hermes and are chowned for Hermes lazy installs
+RUN useradd -m -s /bin/bash multica \
+  && chown -R multica:multica /multica /workspaces /opt/hermes /opt/data
+USER multica
 
 # Environment variables
 ENV \
-  HOME=/opt/data \
+  HOME=/multica \
   HERMES_HOME=/opt/data \
   MULTICA_WORKSPACES_ROOT=/workspaces \
-  PATH=/opt/hermes/.venv/bin:/opt/data/.local/bin:/usr/local/bin:/usr/bin:/bin \
-  SHELL=/bin/bash \
-  VIRTUAL_ENV=/opt/hermes/.venv
+  PATH=/opt/hermes/.venv/bin:/multica/.local/bin:/usr/local/bin:/usr/bin:/bin \
+  SHELL=/bin/bash
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
   CMD multica daemon status
 
-ENTRYPOINT ["/docker-entrypoint.hermes.sh"]
+ENTRYPOINT ["/docker-entrypoint-hermes.sh"]

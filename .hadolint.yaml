@@ -1,4 +1,7 @@
 # DL3008: apt-get version pinning is impractical for Debian/Ubuntu base images;
 # specific package versions are not stable across point releases.
+# SC1091: versions.env is copied into the image before being sourced, but
+# hadolint's ShellCheck mock cannot follow that container-only path.
 ignored:
   - DL3008
+  - SC1091

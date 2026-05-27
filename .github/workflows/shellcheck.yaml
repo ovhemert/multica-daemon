@@ -7,14 +7,14 @@ on:
       - main
     paths:
       - 'docker/docker-entrypoint.sh'
-      - 'docker/docker-entrypoint.hermes.sh'
+      - 'docker/docker-entrypoint-hermes.sh'
       - '.github/workflows/shellcheck.yaml'
   pull_request:
     branches:
       - main
     paths:
       - 'docker/docker-entrypoint.sh'
-      - 'docker/docker-entrypoint.hermes.sh'
+      - 'docker/docker-entrypoint-hermes.sh'
       - '.github/workflows/shellcheck.yaml'
 
 permissions:
@@ -34,4 +34,4 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Run shellcheck
-        run: shellcheck docker/docker-entrypoint.sh docker/docker-entrypoint.hermes.sh
+        run: shellcheck docker/docker-entrypoint.sh docker/docker-entrypoint-hermes.sh

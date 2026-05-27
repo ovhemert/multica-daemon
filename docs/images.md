@@ -14,7 +14,7 @@
 
 All published images are **multi-arch** (`linux/amd64` + `linux/arm64`) and built by GitHub Actions with Docker Buildx. See [`.github/workflows/multi-build.yaml`](../.github/workflows/multi-build.yaml).
 
-Each per-agent image is published from a dedicated variant Dockerfile named `docker/Dockerfile.<variant>`. Hermes is built from the upstream `nousresearch/hermes-agent` base image using [`docker/Dockerfile.hermes`](../docker/Dockerfile.hermes), then the Multica daemon is installed on top.
+Each per-agent image is published from a dedicated variant Dockerfile named `docker/Dockerfile.<variant>`. Each image starts from the Node.js 24 base, installs its agent, then installs the Multica daemon.
 
 To target a specific version of the multica daemon for an agent, include the version as a tag in the image: `ghcr.io/ovhemert/multica-daemon:v<version>-<variant>` (for example `ghcr.io/ovhemert/multica-daemon:v0.3.8-hermes`). The latest release for each variant is also tagged as `latest-<variant>`, for example `ghcr.io/ovhemert/multica-daemon:latest-hermes`. Unversioned `:<variant>` tags track `main` and are intended for development/testing.
 
@@ -24,9 +24,9 @@ Untagged GHCR image versions and orphaned referrer artifacts are removed by [`.g
 
 ## CLI Versions
 
-| Multica daemon version | Claude | Codex | Copilot | Gemini | Hermes base image | OpenCode | Pi |
+| Multica daemon version | Claude | Codex | Copilot | Gemini | Hermes | OpenCode | Pi |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `v0.3.8 (latest)` | `2.1.150` | `0.133.0` | `1.0.54` | `0.43.0` | `main` | `1.15.10` | `0.75.5` |
+| `v0.3.8 (latest)` | `2.1.150` | `0.133.0` | `1.0.54` | `0.43.0` | `main (v0.14.0 at release)` | `1.15.10` | `0.75.5` |
 | `v0.3.6` | `2.1.150` | `0.133.0` | `1.0.54` | `0.43.0` | `main (v0.14.0 at release)` | `1.15.10` | `0.75.5` |
 | `v0.3.5` | `2.1.150` | `0.133.0` | `1.0.51` | `0.43.0` | `main` | `1.15.10` | `0.75.4` |
 | `v0.3.4` | `2.1.144` | `0.131.0` | `1.0.50` | `0.42.0` | `main` | `1.15.5` | `0.75.3` |

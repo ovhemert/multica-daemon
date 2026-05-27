@@ -10,8 +10,7 @@
 | `MULTICA_DAEMON_ID` | `$HOSTNAME` | Daemon device name, shown on the Runtimes page. Must be unique per container. |
 | `MULTICA_WORKSPACES_ROOT` | `/workspaces` | Where the daemon clones repositories |
 | `MULTICA_DAEMON_MAX_CONCURRENT_TASKS` | `20` | Per-daemon concurrent task limit |
-| `GIT_AUTHOR_NAME` | None | Git `user.name` applied globally inside the container |
-| `GIT_AUTHOR_EMAIL` | None | Git `user.email` applied globally inside the container |
+| `GITHUB_TOKEN` | None | Optional token used by the daemon for private GitHub repository clones |
 
 ## MULTICA_DAEMON_ID Uniqueness
 
@@ -25,9 +24,11 @@ Set `MULTICA_DAEMON_ID` explicitly when you want a stable, human-readable name o
 
 ## Secret Management
 
-Do **not** put live runtime tokens in a committed `.env` file. The `.env` file is only for daemon-level settings such as `MULTICA_TOKEN`, URLs, daemon IDs, and git identity.
+Do **not** put live runtime tokens in a committed `.env` file. The `.env` file is only for daemon-level settings such as `MULTICA_TOKEN`, URLs, daemon IDs, repository clone credentials, and git identity.
 
-Configure agent CLI credentials in Multica itself. Do not add `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`, `GITHUB_TOKEN`, or similar agent secrets to `.env` files.
+For private GitHub repositories, set `GITHUB_TOKEN` as a daemon-level secret so the daemon can clone repositories during workspace sync. The entrypoint exposes it to Git through `GIT_ASKPASS`; it is not baked into the image or written into git config.
+
+Configure agent CLI credentials in Multica itself. Do not add `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`, or similar agent secrets to `.env` files. If a GitHub Copilot token is separate from the repository clone token, configure the Copilot token in Multica rather than as a daemon-level environment variable.
 
 Recommended approaches for daemon-level secrets, in order of increasing security:
 
@@ -75,6 +76,6 @@ Add those credentials to the agent configuration in Multica. Multica injects the
 | **OpenCode** | Provider-specific, such as OpenAI or Anthropic | Same as the underlying provider | Provider's own env var |
 | **Pi** | Pi API key | Your Pi account settings | `PI_API_KEY` |
 
-Do not pass these credentials through Docker `-e` flags, Compose `.env` files, `--env-file`, Docker secrets mounted into the container, or host credential directory mounts. Those approaches make the secret part of the runtime configuration.
+Do not pass these AI CLI credentials through Docker `-e` flags, Compose `.env` files, `--env-file`, Docker secrets mounted into the container, or host credential directory mounts. Those approaches make the secret part of the runtime configuration.
 
 Agent credentials should live with the Multica agent configuration and be scoped to the specific agent process that needs them.

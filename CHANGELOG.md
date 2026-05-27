@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+- `GITHUB_TOKEN` / `GIT_ASKPASS` workflow for authenticated private repository clones, with supporting documentation and compose/env examples.
+
+### Changed
+- Hermes image builds from the Node.js 24 variant base, installs `hermes-agent`, then installs the Multica daemon like the other agent variants.
+
+### Removed
+- Default `GIT_AUTHOR_NAME` / `GIT_AUTHOR_EMAIL` environment values from compose; set them explicitly when needed.
+
 ## [v0.3.8] — 2026-05-26
 
 ### Added
