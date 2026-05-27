@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+- Hermes image builds from the Node.js 24 variant base, installs `hermes-agent`, then installs the Multica daemon like the other agent variants.
+
 ## [v0.3.8] — 2026-05-26
 
 ### Added

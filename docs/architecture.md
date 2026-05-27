@@ -29,7 +29,7 @@ One host runs **N containers** with one `MULTICA_DAEMON_ID` per container. Each 
 
 Each image contains:
 
-- **Node.js 24** on a Debian Trixie slim base for the non-Hermes images, needed by most CLIs distributed as npm packages.
+- **Node.js 24** on a Debian Trixie slim base, with Python added for Hermes.
 - **The Multica CLI / daemon**, installed from the official release tarball for the target architecture.
 - **AI coding agent CLIs** with exact `*_VERSION` build args in the relevant Dockerfile where upstream packages support pinned installs:
   - `@anthropic-ai/claude-code` - Claude Code
@@ -38,13 +38,14 @@ Each image contains:
   - `@google/gemini-cli` - Gemini
   - `opencode-ai` - OpenCode
   - `@earendil-works/pi-coding-agent` - Pi
-- **Dedicated per-agent variants**, built from `docker/Dockerfile.<variant>` files. Hermes uses the upstream `nousresearch/hermes-agent` base image with the Multica daemon installed on top.
+  - `hermes-agent` - Hermes
+- **Dedicated per-agent variants**, built from `docker/Dockerfile.<variant>` files.
 - **An entrypoint** ([`docker/docker-entrypoint.sh`](../docker/docker-entrypoint.sh)) that:
   1. Configures the daemon (`server_url`, `app_url`, `device_name`).
   2. Logs in with `MULTICA_TOKEN`.
   3. Starts `multica daemon start --foreground` as PID 1.
 
-The non-Hermes containers run as a non-root `multica` user with `HOME=/multica` and a workspace root at `/workspaces`. The Hermes image uses the upstream `hermes` runtime user and `HOME=/opt/data`. Override the workspace root with `MULTICA_WORKSPACES_ROOT`.
+Containers run as a non-root `multica` user with `HOME=/multica` and a workspace root at `/workspaces`. Override the workspace root with `MULTICA_WORKSPACES_ROOT`.
 
 ## How Runtimes Scale
 

@@ -15,13 +15,11 @@ on:
       - 'docker/Dockerfile.opencode'
       - 'docker/Dockerfile.pi'
       - 'docker/docker-entrypoint.sh'
-      - 'docker/docker-entrypoint.hermes.sh'
+      - 'versions.env'
       - '.github/workflows/pr-build.yaml'
 
 env:
   GHCR_IMAGE: ghcr.io/${{ github.repository }}
-  HERMES_BASE_IMAGE: nousresearch/hermes-agent
-  HERMES_VERSION: main
 
 permissions:
   contents: read
@@ -74,9 +72,6 @@ jobs:
           file: docker/Dockerfile.${{ matrix.variant }}
           platforms: linux/amd64,linux/arm64
           push: false
-          build-args: |
-            HERMES_BASE_IMAGE=${{ env.HERMES_BASE_IMAGE }}
-            HERMES_VERSION=${{ env.HERMES_VERSION }}
           cache-from: |
             type=gha,scope=${{ github.repository }}-${{ github.head_ref }}-${{ matrix.variant }}
             type=gha,scope=${{ github.repository }}-main-${{ matrix.variant }}
