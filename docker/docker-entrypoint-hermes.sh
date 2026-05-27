@@ -2,19 +2,6 @@
 
 set -eou pipefail
 
-# Allow shells to authenticate non-interactive Git commands.
-export GIT_ASKPASS="/tmp/multica-git-askpass"
-export GIT_TERMINAL_PROMPT="0"
-cat > /tmp/multica-git-askpass <<'EOF'
-#!/usr/bin/env bash
-case "$1" in
-  *Username*) printf '%s\n' "${GITHUB_USERNAME:-x-access-token}" ;;
-  *Password*) printf '%s\n' "${GITHUB_TOKEN:-}" ;;
-  *) printf '\n' ;;
-esac
-EOF
-chmod 700 "${GIT_ASKPASS}"
-
 if [[ -n "${GITHUB_TOKEN:-}" ]]; then
   /opt/hermes/.venv/bin/python - <<'PY'
 from pathlib import Path
