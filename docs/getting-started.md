@@ -18,8 +18,6 @@
    | `MULTICA_APP_URL` | URL of the Multica web app, such as `https://app.multica.ai` |
    | `MULTICA_SERVER_URL` | URL of the Multica API/WebSocket server |
    | `MULTICA_TOKEN` | Runtime installer token (`mul_...`) |
-   | `GIT_AUTHOR_NAME` | Name used for git commits produced by agent tasks |
-   | `GIT_AUTHOR_EMAIL` | Email used for git commits produced by agent tasks |
 
    > **Do not commit live runtime tokens to version control.** Use `--env-file`
    > with a file outside your repo, Docker secrets, or SOPS/age for

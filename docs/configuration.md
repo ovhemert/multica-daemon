@@ -11,8 +11,6 @@
 | `MULTICA_WORKSPACES_ROOT` | `/workspaces` | Where the daemon clones repositories |
 | `MULTICA_DAEMON_MAX_CONCURRENT_TASKS` | `20` | Per-daemon concurrent task limit |
 | `GITHUB_TOKEN` | None | Optional token used by the daemon for private GitHub repository clones |
-| `GIT_AUTHOR_NAME` | None | Git `user.name` applied globally inside the container |
-| `GIT_AUTHOR_EMAIL` | None | Git `user.email` applied globally inside the container |
 
 ## MULTICA_DAEMON_ID Uniqueness
 
