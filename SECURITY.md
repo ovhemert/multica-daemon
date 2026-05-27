@@ -37,7 +37,7 @@ Vulnerabilities in the upstream Multica server, AI CLI tools, or GitHub Actions 
 
 ### Image supply chain
 
-- All CLI versions are pinned to exact semver tags in variant Dockerfile `ARG` declarations where upstream packages support pinned installs.
+- All CLI versions are pinned to exact semver tags in `versions.env` where upstream packages support pinned installs.
 - Images are published to `ghcr.io/ovhemert/multica-daemon` from a GitHub Actions workflow triggered only by signed version tags on `main`.
 - Multi-arch builds run on GitHub-hosted runners (no self-hosted runners with persistent state).
 
