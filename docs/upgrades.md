@@ -2,7 +2,7 @@
 
 ## Bumping A CLI Version
 
-Each versioned CLI package has a build arg in its dedicated variant Dockerfile, such as `CLAUDE_VERSION` in `docker/Dockerfile.claude`, `CODEX_VERSION` in `docker/Dockerfile.codex`, or `HERMES_VERSION` in `docker/Dockerfile.hermes`.
+Each versioned CLI package is pinned in `versions.env` (for example `CLAUDE_VERSION`, `CODEX_VERSION`, and `HERMES_VERSION`) and sourced by each variant Dockerfile during build.
 
 To upgrade:
 
