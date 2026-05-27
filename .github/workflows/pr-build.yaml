@@ -15,6 +15,7 @@ on:
       - 'docker/Dockerfile.opencode'
       - 'docker/Dockerfile.pi'
       - 'docker/docker-entrypoint.sh'
+      - 'docker/docker-entrypoint-hermes.sh'
       - 'versions.env'
       - '.github/workflows/pr-build.yaml'
 
