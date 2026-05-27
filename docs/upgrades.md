@@ -6,7 +6,7 @@ Each versioned CLI package is pinned in `versions.env` (for example `CLAUDE_VERS
 
 To upgrade:
 
-1. Update the matching `ARG` default in the affected Dockerfile.
+1. Update the matching version in `versions.env`.
 2. Build and test locally:
 
    ```bash

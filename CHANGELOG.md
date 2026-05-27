@@ -11,6 +11,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 - Hermes image builds from the Node.js 24 variant base, installs `hermes-agent`, then installs the Multica daemon like the other agent variants.
+- Multica daemon CLI updated to `0.3.10`.
+- CLI pins updated: Claude `2.1.152`, Codex `0.134.0`, and OpenCode `1.15.11`.
 
 ### Removed
 - Default `GIT_AUTHOR_NAME` / `GIT_AUTHOR_EMAIL` environment values from compose; set them explicitly when needed.
