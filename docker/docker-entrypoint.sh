@@ -10,9 +10,9 @@ set -eou pipefail
 MULTICA_DAEMON_ID="${MULTICA_DAEMON_ID:-${HOSTNAME}}"
 
 # Allow shells to authenticate non-interactive Git commands.
-export GIT_ASKPASS="/tmp/multica-git-askpass"
+export GIT_ASKPASS="${HOME}/.multica-git-askpass"
 export GIT_TERMINAL_PROMPT="0"
-cat > /tmp/multica-git-askpass <<'EOF'
+cat > "${GIT_ASKPASS}" <<'EOF'
 #!/usr/bin/env bash
 case "$1" in
   *Username*) printf '%s\n' "${GITHUB_USERNAME:-x-access-token}" ;;
