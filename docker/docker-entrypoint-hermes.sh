@@ -2,6 +2,11 @@
 
 set -eou pipefail
 
+if [[ "$(id -u)" == "0" ]]; then
+  chown -R multica:multica /opt/data
+  exec /usr/sbin/gosu multica "$0" "$@"
+fi
+
 if [[ -n "${GITHUB_TOKEN:-}" ]]; then
   /opt/hermes/.venv/bin/python - <<'PY'
 from pathlib import Path
@@ -29,4 +34,4 @@ with config_path.open("w", encoding="utf-8") as handle:
 PY
 fi
 
-exec /docker-entrypoint.sh
+exec /docker-entrypoint.sh "$@"

@@ -1,6 +1,6 @@
 FROM node:24-trixie-slim AS base
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends ca-certificates curl ffmpeg git openssh-client python3 python3-venv ripgrep xz-utils \
+  && apt-get install -y --no-install-recommends ca-certificates curl ffmpeg git gosu openssh-client python3 python3-venv ripgrep xz-utils \
   && rm -rf /var/lib/apt/lists/*
 
 
@@ -43,7 +43,6 @@ RUN chmod +x /docker-entrypoint.sh /docker-entrypoint-hermes.sh
 # Global Python packages remain under /opt/hermes and are chowned for Hermes lazy installs
 RUN useradd -m -s /bin/bash multica \
   && chown -R multica:multica /multica /workspaces /opt/hermes /opt/data
-USER multica
 
 # Environment variables
 ENV \
@@ -54,6 +53,6 @@ ENV \
   SHELL=/bin/bash
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD multica daemon status
+  CMD /usr/sbin/gosu multica multica daemon status
 
 ENTRYPOINT ["/docker-entrypoint-hermes.sh"]
