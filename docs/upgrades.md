@@ -14,7 +14,7 @@ To upgrade:
    docker run --rm --entrypoint claude ghcr.io/ovhemert/multica-daemon:claude --version
    ```
 
-For Hermes, edit `versions.env` to set the desired version, then build:
+For Hermes, edit `HERMES_VERSION` in `versions.env` to the desired version, then build:
 
    ```bash
    docker build -f docker/Dockerfile.hermes -t ghcr.io/ovhemert/multica-daemon:hermes .
