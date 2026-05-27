@@ -9,22 +9,6 @@ set -eou pipefail
 # which is unique per container by default.
 MULTICA_DAEMON_ID="${MULTICA_DAEMON_ID:-${HOSTNAME}}"
 
-# Allow the daemon's non-interactive git clones to authenticate to GitHub.
-# The token stays in the environment instead of being written into git config.
-if [[ -n "${GITHUB_TOKEN:-}" ]]; then
-  export GIT_ASKPASS=/tmp/multica-git-askpass
-  export GIT_TERMINAL_PROMPT=0
-  cat >"${GIT_ASKPASS}" <<'EOF'
-#!/usr/bin/env bash
-case "$1" in
-  *Username*) printf '%s\n' "${GITHUB_USERNAME:-x-access-token}" ;;
-  *Password*) printf '%s\n' "${GITHUB_TOKEN}" ;;
-  *) printf '\n' ;;
-esac
-EOF
-  chmod 700 "${GIT_ASKPASS}"
-fi
-
 # Set daemon configuration
 export MULTICA_DAEMON_DEVICE_NAME="${MULTICA_DAEMON_ID}"
 multica config set server_url "${MULTICA_SERVER_URL}"

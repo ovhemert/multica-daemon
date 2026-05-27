@@ -36,7 +36,8 @@ RUN . /usr/local/share/multica-daemon/versions.env \
 # Filesystem
 RUN mkdir -p /multica /workspaces /opt/hermes /opt/data
 COPY docker/docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+COPY docker/docker-entrypoint-hermes.sh /docker-entrypoint-hermes.sh
+RUN chmod +x /docker-entrypoint.sh /docker-entrypoint-hermes.sh
 
 # Create non-root user so agents can run workspace operations safely
 # Global Python packages remain under /opt/hermes and are chowned for Hermes lazy installs
@@ -55,4 +56,4 @@ ENV \
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
   CMD multica daemon status
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/docker-entrypoint-hermes.sh"]

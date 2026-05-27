@@ -3,8 +3,6 @@ x-daemon-environment: &daemon-environment
   MULTICA_SERVER_URL: ${MULTICA_SERVER_URL:-http://localhost:8080}
   MULTICA_TOKEN: ${MULTICA_TOKEN}
   GITHUB_TOKEN: ${GITHUB_TOKEN:-}
-  GIT_AUTHOR_NAME: ${GIT_AUTHOR_NAME:-Multica Daemon}
-  GIT_AUTHOR_EMAIL: ${GIT_AUTHOR_EMAIL:-daemon@multica.ai}
 
 x-workspace-volumes: &workspace-volumes
   - workspaces:/workspaces
