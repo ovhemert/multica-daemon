@@ -6,13 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [v0.3.11] — 2026-05-28
+
 ### Added
 - `GITHUB_TOKEN` / `GIT_ASKPASS` workflow for authenticated private repository clones, with supporting documentation and compose/env examples.
 
 ### Changed
 - Hermes image builds from the Node.js 24 variant base, installs `hermes-agent`, then installs the Multica daemon like the other agent variants.
-- Multica daemon CLI updated to `0.3.10`.
-- CLI pins updated: Claude `2.1.152`, Codex `0.134.0`, and OpenCode `1.15.11`.
+- Multica daemon CLI updated to `0.3.11`.
+- CLI pins updated: Claude `2.1.153`, Gemini `0.44.0`, and Pi `0.76.0`.
 
 ### Removed
 - Default `GIT_AUTHOR_NAME` / `GIT_AUTHOR_EMAIL` environment values from compose; set them explicitly when needed.
@@ -84,7 +86,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `HEALTHCHECK` using `multica daemon status`.
 - MIT license.
 
-[Unreleased]: https://github.com/ovhemert/multica-daemon/compare/v0.3.8...HEAD
+[Unreleased]: https://github.com/ovhemert/multica-daemon/compare/v0.3.11...HEAD
+[v0.3.11]: https://github.com/ovhemert/multica-daemon/compare/v0.3.8...v0.3.11
 [v0.3.8]: https://github.com/ovhemert/multica-daemon/compare/v0.3.6...v0.3.8
 [v0.3.6]: https://github.com/ovhemert/multica-daemon/compare/v0.3.5...v0.3.6
 [v0.3.5]: https://github.com/ovhemert/multica-daemon/compare/v0.3.4...v0.3.5
