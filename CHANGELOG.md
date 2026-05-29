@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [v0.3.12] — 2026-05-29
 
+### Added
+- GitHub CLI (gh)
+
 ### Changed
 - Multica daemon CLI updated to `0.3.12`.
 - CLI pins updated: Claude `2.1.156`, Codex `0.135.0`, Copilot `1.0.55`, Gemini `0.44.1`, Hermes `0.15.2`, OpenCode `1.15.12`, and Pi `0.77.0`.
