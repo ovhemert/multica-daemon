@@ -16,7 +16,7 @@ All published images are **multi-arch** (`linux/amd64` + `linux/arm64`) and buil
 
 Each per-agent image is published from a dedicated variant Dockerfile named `docker/Dockerfile.<variant>`. Each image starts from the Node.js 24 base, installs its agent, then installs the Multica daemon.
 
-To target a specific version of the multica daemon for an agent, include the version as a tag in the image: `ghcr.io/ovhemert/multica-daemon:v<version>-<variant>` (for example `ghcr.io/ovhemert/multica-daemon:v0.3.14-hermes`). The latest release for each variant is also tagged as `latest-<variant>`, for example `ghcr.io/ovhemert/multica-daemon:latest-hermes`. Unversioned `:<variant>` tags track `main` and are intended for development/testing.
+To target a specific version of the multica daemon for an agent, include the version as a tag in the image: `ghcr.io/ovhemert/multica-daemon:v<version>-<variant>` (for example `ghcr.io/ovhemert/multica-daemon:v0.3.15-hermes`). The latest release for each variant is also tagged as `latest-<variant>`, for example `ghcr.io/ovhemert/multica-daemon:latest-hermes`. Unversioned `:<variant>` tags track `main` and are intended for development/testing.
 
 ## Registry Cleanup
 
@@ -26,7 +26,8 @@ Untagged GHCR image versions and orphaned referrer artifacts are removed by [`.g
 
 | Multica daemon version | Claude | Codex | Copilot | Gemini | Hermes | OpenCode | Pi |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `v0.3.14 (latest)` | `2.1.161` | `0.136.0` | `1.0.59` | `0.45.0` | `0.15.2` | `1.15.13` | `0.78.0` |
+| `v0.3.15 (latest)` | `2.1.162` | `0.137.0` | `1.0.59` | `0.45.0` | `0.15.2` | `1.15.13` | `0.78.0` |
+| `v0.3.14` | `2.1.161` | `0.136.0` | `1.0.59` | `0.45.0` | `0.15.2` | `1.15.13` | `0.78.0` |
 | `v0.3.13` | `2.1.160` | `0.136.0` | `1.0.57` | `0.44.1` | `0.15.2` | `1.15.13` | `0.78.0` |
 | `v0.3.12` | `2.1.156` | `0.135.0` | `1.0.55` | `0.44.1` | `0.15.2` | `1.15.12` | `0.77.0` |
 | `v0.3.11` | `2.1.153` | `0.134.0` | `1.0.54` | `0.44.0` | `0.14.0` | `1.15.11` | `0.76.0` |
