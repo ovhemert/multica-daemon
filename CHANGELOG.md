@@ -7,6 +7,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ## [Unreleased]
 
 
+## [v0.3.22] — 2026-06-16
+
+### Changed
+- Multica daemon CLI updated to `0.3.22`.
+- CLI pins updated: Claude `2.1.178`, Codex `0.140.0`, Copilot `1.0.63`, OpenCode `1.17.7`, and Pi `0.79.4`.
+
+
 ## [v0.3.21] — 2026-06-13
 
 ### Changed
