@@ -16,7 +16,7 @@ All published images are **multi-arch** (`linux/amd64` + `linux/arm64`) and buil
 
 Each per-agent image is published from a dedicated variant Dockerfile named `docker/Dockerfile.<variant>`. Each image starts from the Node.js 24 base, installs its agent, then installs the Multica daemon.
 
-To target a specific version of the multica daemon for an agent, include the version as a tag in the image: `ghcr.io/ovhemert/multica-daemon:v<version>-<variant>` (for example `ghcr.io/ovhemert/multica-daemon:v0.3.21-hermes`). The latest release for each variant is also tagged as `latest-<variant>`, for example `ghcr.io/ovhemert/multica-daemon:latest-hermes`. Unversioned `:<variant>` tags track `main` and are intended for development/testing.
+To target a specific version of the multica daemon for an agent, include the version as a tag in the image: `ghcr.io/ovhemert/multica-daemon:v<version>-<variant>` (for example `ghcr.io/ovhemert/multica-daemon:v0.3.23-hermes`). The latest release for each variant is also tagged as `latest-<variant>`, for example `ghcr.io/ovhemert/multica-daemon:latest-hermes`. Unversioned `:<variant>` tags track `main` and are intended for development/testing.
 
 ## Registry Cleanup
 
@@ -26,7 +26,8 @@ Untagged GHCR image versions and orphaned referrer artifacts are removed by [`.g
 
 | Multica daemon version | Claude | Codex | Copilot | Gemini | Hermes | OpenCode | Pi |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `v0.3.21 (latest)` | `2.1.177` | `0.139.0` | `1.0.61` | `0.46.0` | `0.16.0` | `1.17.4` | `0.79.2` |
+| `v0.3.23 (latest)` | `2.1.179` | `0.140.0` | `1.0.63` | `0.46.0` | `0.16.0` | `1.17.7` | `0.79.6` |
+| `v0.3.21` | `2.1.177` | `0.139.0` | `1.0.61` | `0.46.0` | `0.16.0` | `1.17.4` | `0.79.2` |
 | `v0.3.20` | `2.1.175` | `0.139.0` | `1.0.61` | `0.46.0` | `0.16.0` | `1.17.4` | `0.79.1` |
 | `v0.3.19` | `2.1.173` | `0.139.0` | `1.0.61` | `0.46.0` | `0.16.0` | `1.17.3` | `0.79.1` |
 | `v0.3.18` | `2.1.169` | `0.138.0` | `1.0.60` | `0.45.2` | `0.16.0` | `1.16.2` | `0.79.0` |
