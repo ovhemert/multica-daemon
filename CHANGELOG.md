@@ -162,7 +162,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `HEALTHCHECK` using `multica daemon status`.
 - MIT license.
 
-[Unreleased]: https://github.com/ovhemert/multica-daemon/compare/v0.3.24...HEAD
+[Unreleased]: https://github.com/ovhemert/multica-daemon/compare/v0.3.27...HEAD
+[v0.3.27]: https://github.com/ovhemert/multica-daemon/compare/v0.3.26...v0.3.27
+[v0.3.26]: https://github.com/ovhemert/multica-daemon/compare/v0.3.24...v0.3.26
 [v0.3.24]: https://github.com/ovhemert/multica-daemon/compare/v0.3.21...v0.3.24
 [v0.3.21]: https://github.com/ovhemert/multica-daemon/compare/v0.3.20...v0.3.21
 [v0.3.20]: https://github.com/ovhemert/multica-daemon/compare/v0.3.19...v0.3.20
