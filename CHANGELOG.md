@@ -11,7 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 - Multica daemon CLI updated to `0.3.31`.
-- CLI pins updated: Claude `2.1.195`, Codex `0.142.3`, Copilot `1.0.65`, Gemini `0.49.0`, Hermes `0.17.0`, OpenCode `1.17.11`, and Pi `0.80.2`.
+- CLI pins updated: Claude `2.1.195`, Codex `0.142.4`, Copilot `1.0.65`, Gemini `0.49.0`, Hermes `0.17.0`, OpenCode `1.17.11`, and Pi `0.80.2`.
 
 
 ## [v0.3.26] — 2026-06-19
