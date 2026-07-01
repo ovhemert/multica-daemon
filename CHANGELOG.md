@@ -7,6 +7,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ## [Unreleased]
 
 
+## [v0.3.33] — 2026-07-01
+
+### Changed
+- Multica daemon CLI updated to `0.3.33`.
+- CLI pins updated: Claude `2.1.197`, Codex `0.142.5`, Copilot `1.0.67`, OpenCode `1.17.12`, and Pi `0.80.3`.
+
+
 ## [v0.3.31] — 2026-06-27
 
 ### Changed
@@ -169,7 +176,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `HEALTHCHECK` using `multica daemon status`.
 - MIT license.
 
-[Unreleased]: https://github.com/ovhemert/multica-daemon/compare/v0.3.24...HEAD
+[Unreleased]: https://github.com/ovhemert/multica-daemon/compare/v0.3.33...HEAD
+[v0.3.33]: https://github.com/ovhemert/multica-daemon/compare/v0.3.31...v0.3.33
+[v0.3.31]: https://github.com/ovhemert/multica-daemon/compare/v0.3.26...v0.3.31
+[v0.3.26]: https://github.com/ovhemert/multica-daemon/compare/v0.3.24...v0.3.26
 [v0.3.24]: https://github.com/ovhemert/multica-daemon/compare/v0.3.21...v0.3.24
 [v0.3.21]: https://github.com/ovhemert/multica-daemon/compare/v0.3.20...v0.3.21
 [v0.3.20]: https://github.com/ovhemert/multica-daemon/compare/v0.3.19...v0.3.20
